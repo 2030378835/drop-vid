@@ -19,22 +19,20 @@ export type DownloadItem = {
 
 export const APP_VERSION = '0.1.0'
 
-/** macOS 安装包下载列表 */
+/** macOS 安装包下载列表（对应 GitHub Release v0.1.0） */
 export const MAC_DOWNLOADS: DownloadItem[] = [
   {
     arch: 'arm64',
     label: 'Apple Silicon',
     detail: 'M1 / M2 / M3 / M4 · arm64',
-    // 例：'https://github.com/you/dropvid/releases/download/v0.1.0/DropVid-0.1.0-arm64.dmg'
-    href: 'https://github.com/you/dropvid/releases/download/v0.1.0/DropVid-0.1.0-arm64.dmg',
+    href: 'https://github.com/2030378835/drop-vid/releases/download/v0.1.0/DropVid-0.1.0-arm64.dmg',
     primary: true
   },
   {
     arch: 'x64',
     label: 'Intel',
     detail: 'x64 · 适用于 Intel Mac',
-    // 例：'https://github.com/you/dropvid/releases/download/v0.1.0/DropVid-0.1.0-x64.dmg'
-    href: 'https://github.com/you/dropvid/releases/download/v0.1.0/DropVid-0.1.0-arm64.dmg'
+    href: 'https://github.com/2030378835/drop-vid/releases/download/v0.1.0/DropVid-0.1.0-x64.dmg'
   }
 ]
 
