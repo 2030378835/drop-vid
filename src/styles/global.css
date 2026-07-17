@@ -14,6 +14,17 @@
   --font-body: 'DM Sans', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
   --shadow: 0 1px 0 rgba(18, 20, 26, 0.04), 0 24px 56px rgba(18, 20, 26, 0.1);
   --radius: 18px;
+  /* Hero / 正文内容区；导航栏单独铺满更靠边 */
+  --layout-max: 1120px;
+  --layout-pad: clamp(20px, 4vw, 40px);
+}
+
+.layout {
+  width: 100%;
+  max-width: var(--layout-max);
+  margin-inline: auto;
+  padding-inline: var(--layout-pad);
+  box-sizing: border-box;
 }
 
 *,

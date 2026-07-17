@@ -5,9 +5,11 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  width: min(100%, 1120px);
-  margin: 0 auto;
-  padding: 20px clamp(20px, 4vw, 40px) 8px;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 20px clamp(20px, 3vw, 48px) 8px;
+  box-sizing: border-box;
 }
 
 .onHero {

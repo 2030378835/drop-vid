@@ -1,12 +1,10 @@
 .hero {
   position: relative;
   z-index: 2;
-  padding: clamp(28px, 5vh, 48px) clamp(20px, 4vw, 40px) clamp(48px, 8vh, 72px);
+  padding-block: clamp(28px, 5vh, 48px) clamp(48px, 8vh, 72px);
 }
 
 .grid {
-  width: min(100%, 1120px);
-  margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(240px, 0.75fr);
   gap: clamp(32px, 6vw, 72px);

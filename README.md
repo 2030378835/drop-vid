@@ -16,6 +16,25 @@ pnpm build
 pnpm preview
 ```
 
+模拟 GitHub Pages 子路径构建：
+
+```bash
+VITE_BASE=/drop-vid/ pnpm build
+```
+
+## GitHub Pages 部署
+
+已配置 Actions：推送到 `main` 或手动运行 **Deploy GitHub Pages** 工作流。
+
+首次使用请在仓库设置里打开 Pages：
+
+1. **Settings → Pages**
+2. **Build and deployment → Source** 选 **GitHub Actions**
+
+上线地址：
+
+`https://2030378835.github.io/drop-vid/`
+
 ## 下载链接
 
 只改一处配置：[`src/config/downloads.ts`](src/config/downloads.ts)

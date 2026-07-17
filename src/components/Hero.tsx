@@ -54,7 +54,7 @@ export function Hero(): JSX.Element {
 
   return (
     <section className={styles.hero}>
-      <div className={styles.grid}>
+      <div className={`layout ${styles.grid}`}>
         <div className={styles.copy}>
           <motion.img
             src={logo}

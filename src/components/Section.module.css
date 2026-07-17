@@ -1,7 +1,9 @@
 .section {
-  width: min(100%, 1080px);
+  width: 100%;
+  max-width: var(--layout-max);
   margin: 0 auto;
-  padding: clamp(48px, 8vh, 80px) clamp(20px, 4vw, 40px);
+  padding: clamp(48px, 8vh, 80px) var(--layout-pad);
+  box-sizing: border-box;
 }
 
 /* 紧接 Hero 的第一段，减少「空一段再开始」的断裂感 */
