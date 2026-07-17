@@ -1,0 +1,81 @@
+.stage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: #fff;
+  background: #1b1f3b;
+}
+
+.atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(165deg, #23284f 0%, #3430a0 38%, #3f5bd6 72%, #243b7a 100%);
+}
+
+.orbA,
+.orbB,
+.orbC {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.orbA {
+  width: min(52vw, 480px);
+  height: min(52vw, 480px);
+  top: -18%;
+  right: -10%;
+  background: rgba(129, 140, 248, 0.42);
+  animation: floatA 10s ease-in-out infinite;
+}
+
+.orbB {
+  width: min(36vw, 320px);
+  height: min(36vw, 320px);
+  bottom: -20%;
+  left: -8%;
+  background: rgba(37, 99, 235, 0.32);
+  animation: floatB 12s ease-in-out infinite;
+}
+
+.orbC {
+  width: min(24vw, 200px);
+  height: min(24vw, 200px);
+  top: 48%;
+  left: 52%;
+  background: rgba(255, 255, 255, 0.1);
+  animation: floatC 8s ease-in-out infinite;
+}
+
+@keyframes floatA {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-18px, 14px);
+  }
+}
+
+@keyframes floatB {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(16px, -12px);
+  }
+}
+
+@keyframes floatC {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-10px, 8px) scale(1.08);
+  }
+}

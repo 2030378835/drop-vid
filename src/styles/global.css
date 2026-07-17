@@ -1,0 +1,55 @@
+:root {
+  --ink: #12141a;
+  --ink-soft: #3a3f4b;
+  --muted: #7a8190;
+  --line: rgba(18, 20, 26, 0.08);
+  --line-strong: rgba(18, 20, 26, 0.14);
+  --surface: #ffffff;
+  --bg: #f3f4f7;
+  --accent: #4f46e5;
+  --accent-deep: #3730a3;
+  --accent-soft: rgba(79, 70, 229, 0.12);
+  --download: #2563eb;
+  --font-display: 'Outfit', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --font-body: 'DM Sans', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --shadow: 0 1px 0 rgba(18, 20, 26, 0.04), 0 24px 56px rgba(18, 20, 26, 0.1);
+  --radius: 18px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+}
+
+#root {
+  min-height: 100vh;
+}

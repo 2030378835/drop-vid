@@ -1,0 +1,72 @@
+.header {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: min(100%, 1120px);
+  margin: 0 auto;
+  padding: 20px clamp(20px, 4vw, 40px) 8px;
+}
+
+.onHero {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.04em;
+  color: inherit;
+}
+
+.mark {
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.onHero .nav a:not(.cta) {
+  color: rgba(255, 255, 255, 0.78);
+  transition: color 0.15s ease;
+}
+
+.onHero .nav a:not(.cta):hover {
+  color: #fff;
+}
+
+.cta {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--accent-deep) !important;
+  font-weight: 650;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.cta:hover {
+  background: #fff;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+  .nav a:not(.cta) {
+    display: none;
+  }
+
+  .header {
+    padding-top: 16px;
+  }
+}
