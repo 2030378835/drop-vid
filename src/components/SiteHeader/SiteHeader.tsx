@@ -17,6 +17,7 @@ export function SiteHeader({ variant = 'default' }: Props): JSX.Element {
         <a href="#how">用法</a>
         <a href="#platforms">平台</a>
         <a href="#features">能力</a>
+        <a href="#install">安装说明</a>
         <a className={styles.cta} href="#download">
           下载
         </a>

@@ -67,7 +67,7 @@ export function DownloadSection(): React.JSX.Element {
 
       <p className={styles.note}>
         {ready
-          ? 'macOS：打开 dmg，将 DropVid 拖入「应用程序」。Windows：运行 .exe 安装程序并按向导完成安装。'
+          ? '下载后请查看下方「安装说明」，了解 Mac / Windows 首次启动时的系统安全提示如何处理。'
           : '安装包链接尚未配置：请编辑 src/config/downloads.ts 填入正式地址。'}
       </p>
     </section>
