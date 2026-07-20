@@ -1,5 +1,5 @@
 import type { JSX } from 'react'
-import logo from '../assets/logo.png'
+import logo from '../../assets/logo.png'
 import styles from './SiteHeader.module.css'
 
 type Props = {

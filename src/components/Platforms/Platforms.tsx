@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import section from './Section.module.css'
+import section from '../Section/Section.module.css'
 import styles from './Platforms.module.css'
 
 const PLATFORMS = [

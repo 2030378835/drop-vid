@@ -1,6 +1,6 @@
 import type { JSX } from 'react'
-import { SiteHeader } from './SiteHeader'
-import { Hero } from './Hero'
+import { SiteHeader } from '../SiteHeader'
+import { Hero } from '../Hero'
 import styles from './HeroStage.module.css'
 
 /** 顶栏 + Hero 同一视觉平面；高度随内容，避免首屏底部大块空带 */

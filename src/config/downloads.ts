@@ -2,6 +2,7 @@
  * 官网下载链接配置 —— 发版时只改这一处。
  * href 留空或 '#' 时，对应按钮不可用（页面会提示待发布）。
  */
+export const VERSION = '0.1.1'
 export type DownloadArch = 'arm64' | 'x64'
 
 export type DownloadItem = {
@@ -17,24 +18,29 @@ export type DownloadItem = {
   primary?: boolean
 }
 
-export const APP_VERSION = '0.1.0'
-
 /** macOS 安装包下载列表（对应 GitHub Release v0.1.0） */
 export const MAC_DOWNLOADS: DownloadItem[] = [
   {
     arch: 'arm64',
     label: 'Apple Silicon',
     detail: 'M1 / M2 / M3 / M4 · arm64',
-    href: 'https://github.com/2030378835/drop-vid/releases/download/v0.1.0/DropVid-0.1.0-arm64.dmg',
+    href: `https://github.com/2030378835/drop-vid/releases/download/v${VERSION}/DropVid-${VERSION}-arm64.dmg`,
     primary: true
   },
   {
     arch: 'x64',
     label: 'Intel',
     detail: 'x64 · 适用于 Intel Mac',
-    href: 'https://github.com/2030378835/drop-vid/releases/download/v0.1.0/DropVid-0.1.0-x64.dmg'
+    href: `https://github.com/2030378835/drop-vid/releases/download/v${VERSION}/DropVid-${VERSION}-x64.dmg`
   }
 ]
+
+/** Windows 安装包（对应 GitHub Release） */
+export const WIN_DOWNLOAD = {
+  label: 'Windows',
+  detail: 'Windows 10 / 11 · 64 位',
+  href: `https://github.com/2030378835/drop-vid/releases/download/v${VERSION}/DropVid-${VERSION}-setup.exe`
+} as const
 
 export function isDownloadReady(href: string): boolean {
   const value = href.trim()
@@ -42,7 +48,10 @@ export function isDownloadReady(href: string): boolean {
 }
 
 export function hasAnyDownload(): boolean {
-  return MAC_DOWNLOADS.some((item) => isDownloadReady(item.href))
+  return (
+    MAC_DOWNLOADS.some((item) => isDownloadReady(item.href)) ||
+    isDownloadReady(WIN_DOWNLOAD.href)
+  )
 }
 
 export function getDownloadByArch(arch: DownloadArch): DownloadItem | undefined {
@@ -57,7 +66,7 @@ export function startDownload(href: string): void {
   anchor.rel = 'noopener noreferrer'
   // 外链一般由浏览器/CDN 处理 Content-Disposition；保留 download 有助于同域文件名
   const fileName = href.split('/').pop()
-  if (fileName && /\.(dmg|zip|pkg)(\?|$)/i.test(fileName)) {
+  if (fileName && /\.(dmg|zip|pkg|exe)(\?|$)/i.test(fileName)) {
     anchor.setAttribute('download', fileName.split('?')[0] ?? fileName)
   }
   anchor.style.display = 'none'
