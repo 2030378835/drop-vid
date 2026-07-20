@@ -1,0 +1,9 @@
+{
+  "notes": "DropVid v0.1.1 内测更新",
+  "downloads": {
+    "darwin-arm64": "https://github.com/2030378835/drop-vid/releases/download/v0.1.0/DropVid-0.1.0-arm64.dmg",
+    "darwin-x64": "https://github.com/2030378835/drop-vid/releases/download/v0.1.0/DropVid-0.1.0-x64.dmg",
+    "win32-x64": "https://github.com/2030378835/drop-vid/releases/download/v0.1.0/DropVid-0.1.0-setup.exe"
+  },
+  "fallbackUrl": "https://2030378835.github.io/drop-vid/"
+}
