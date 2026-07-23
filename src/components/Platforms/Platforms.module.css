@@ -37,6 +37,14 @@
   line-height: 1.45;
 }
 
+.filler {
+  background: linear-gradient(160deg, rgba(79, 70, 229, 0.06), rgba(255, 255, 255, 0.92));
+}
+
+.filler strong {
+  color: var(--ink-soft, #3a3f4b);
+}
+
 @media (max-width: 900px) {
   .list {
     grid-template-columns: repeat(2, minmax(0, 1fr));

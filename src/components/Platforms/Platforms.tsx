@@ -9,7 +9,8 @@ const PLATFORMS = [
   { name: 'Twitter / X', note: '推文中的视频' },
   { name: '小红书', note: '需登录 Cookie' },
   { name: 'Instagram', note: '需登录 Cookie' },
-  { name: '直链', note: 'mp4 / mov / webm' }
+  { name: '直链', note: 'mp4 / mov / webm' },
+  { name: '更多平台', note: '持续适配中', filler: true }
 ]
 
 export function Platforms(): React.JSX.Element {
@@ -25,6 +26,7 @@ export function Platforms(): React.JSX.Element {
         {PLATFORMS.map((item, index) => (
           <motion.li
             key={item.name}
+            className={item.filler ? styles.filler : undefined}
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
