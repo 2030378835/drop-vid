@@ -24,14 +24,14 @@ VITE_BASE=/drop-vid/ pnpm build
 
 ## GitHub Pages 部署
 
-推送到 `main`（或手动跑 **Deploy GitHub Pages**）后，Actions 会构建并发布到 `gh-pages` 分支。
+推送到 `main`（或手动跑 **Deploy GitHub Pages**）后，Actions 会构建并**直接发布**到 GitHub Pages，不再依赖 `gh-pages` 分支。
 
-**首次必做**（否则会一直 404）：
+**首次必做**（否则站点不会更新）：
 
 1. 打开 [仓库 Settings → Pages](https://github.com/2030378835/drop-vid/settings/pages)
-2. **Build and deployment → Source** 选 **Deploy from a branch**
-3. **Branch** 选 `gh-pages` / `/ (root)`，保存
-4. 等 1～2 分钟，打开：`https://2030378835.github.io/drop-vid/`
+2. **Build and deployment → Source** 选 **GitHub Actions**（不要选 Deploy from a branch）
+3. 推送一次 `main`，或在 Actions 里手动 **Run workflow**
+4. 打开：`https://2030378835.github.io/drop-vid/`
 
 可在 [Actions](https://github.com/2030378835/drop-vid/actions) 查看部署是否成功。
 
