@@ -18,7 +18,7 @@ export function DownloadSection(): React.JSX.Element {
       <p className={section.kicker}>下载</p>
       <h2 className={section.title}>获取 DropVid</h2>
       <p className={section.desc}>
-        当前为内测版 v{VERSION}。请选择与你的系统匹配的安装包。
+        当前为内测版 v{VERSION}。新增历史库收藏/标签、剪贴板询问下载与托盘常驻。请选择与你的系统匹配的安装包。
       </p>
 
       <h3 className={styles.groupTitle}>macOS</h3>

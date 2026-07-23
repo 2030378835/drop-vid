@@ -2,7 +2,7 @@
  * 官网下载链接配置 —— 发版时只改这一处。
  * href 留空或 '#' 时，对应按钮不可用（页面会提示待发布）。
  */
-export const VERSION = '0.1.1'
+export const VERSION = '0.1.2'
 export type DownloadArch = 'arm64' | 'x64'
 
 export type DownloadItem = {
@@ -18,7 +18,7 @@ export type DownloadItem = {
   primary?: boolean
 }
 
-/** macOS 安装包下载列表（对应 GitHub Release v0.1.0） */
+/** macOS 安装包下载列表（对应 GitHub Release） */
 export const MAC_DOWNLOADS: DownloadItem[] = [
   {
     arch: 'arm64',

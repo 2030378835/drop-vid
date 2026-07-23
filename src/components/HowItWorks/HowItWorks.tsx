@@ -3,9 +3,21 @@ import section from '../Section/Section.module.css'
 import styles from './HowItWorks.module.css'
 
 const STEPS = [
-  { n: '01', title: '复制链接', text: '在浏览器或 App 里复制公开视频分享链接。' },
-  { n: '02', title: '粘贴到 DropVid', text: '打开应用，粘贴链接，选择清晰度与格式。' },
-  { n: '03', title: '保存到本地', text: '开始下载，文件落到「下载 / DropVid」文件夹。' }
+  {
+    n: '01',
+    title: '复制链接',
+    text: '在浏览器或 App 里复制公开视频分享链接；也可开启「复制即询问」。'
+  },
+  {
+    n: '02',
+    title: '粘贴到 DropVid',
+    text: '打开应用粘贴链接，或点系统通知确认，选择清晰度与格式。'
+  },
+  {
+    n: '03',
+    title: '保存与整理',
+    text: '文件落到本地文件夹；历史库可收藏、打标签，按平台或作者浏览。'
+  }
 ]
 
 export function HowItWorks(): React.JSX.Element {

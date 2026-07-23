@@ -14,9 +14,9 @@ import { detectClientPlatform, type ClientPlatform } from '../../utils/detectCli
 import styles from './Hero.module.css'
 
 const LEAD_COPY: Record<ClientPlatform, string> = {
-  mac: '粘贴公开视频链接，选择清晰度，保存到本地。为 macOS 打造的极简下载工具。',
-  windows: '粘贴公开视频链接，选择清晰度，保存到本地。为 Windows 打造的极简下载工具。',
-  other: '粘贴公开视频链接，选择清晰度，保存到本地。支持 macOS 与 Windows 的极简下载工具。'
+  mac: '粘贴公开视频链接，选择清晰度，保存到本地。支持历史整理、复制询问与托盘常驻。',
+  windows: '粘贴公开视频链接，选择清晰度，保存到本地。支持历史整理、复制询问与托盘常驻。',
+  other: '粘贴公开视频链接，选择清晰度，保存到本地。支持 macOS 与 Windows。'
 }
 
 export function Hero(): JSX.Element {

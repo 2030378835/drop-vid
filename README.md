@@ -40,12 +40,9 @@ VITE_BASE=/drop-vid/ pnpm build
 只改一处配置：[`src/config/downloads.ts`](src/config/downloads.ts)
 
 ```ts
-export const APP_VERSION = '0.1.0'
-
-export const MAC_DOWNLOADS = [
-  { arch: 'arm64', label: 'Apple Silicon', href: 'https://.../DropVid-0.1.0-arm64.dmg', primary: true },
-  { arch: 'x64', label: 'Intel', href: 'https://.../DropVid-0.1.0-x64.dmg' }
-]
+export const VERSION = '0.1.2'
 ```
 
-`href` 为空或 `#` 时，对应按钮不可点，页面会提示「尚未配置」。
+安装包地址会按 `v${VERSION}` 自动拼到 GitHub Release。`href` 为空或 `#` 时，对应按钮不可点。
+
+应用内更新元数据见 [`update/latest.json`](update/latest.json)（与 `push-drop-vid` 保持一致）。
