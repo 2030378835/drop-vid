@@ -2,7 +2,7 @@
  * 官网下载链接配置 —— 发版时只改这一处。
  * href 留空或 '#' 时，对应按钮不可用（页面会提示待发布）。
  */
-export const VERSION = '0.1.2'
+export const VERSION = '0.1.3'
 export type DownloadArch = 'arm64' | 'x64'
 
 export type DownloadItem = {
@@ -23,14 +23,14 @@ export const MAC_DOWNLOADS: DownloadItem[] = [
   {
     arch: 'arm64',
     label: 'Apple Silicon',
-    detail: 'M1 / M2 / M3 / M4 · arm64',
+    detail: 'Apple Silicon · arm64',
     href: `https://github.com/2030378835/drop-vid/releases/download/v${VERSION}/DropVid-${VERSION}-arm64.dmg`,
     primary: true
   },
   {
     arch: 'x64',
     label: 'Intel',
-    detail: 'x64 · 适用于 Intel Mac',
+    detail: 'Intel · x64',
     href: `https://github.com/2030378835/drop-vid/releases/download/v${VERSION}/DropVid-${VERSION}-x64.dmg`
   }
 ]
