@@ -35,6 +35,13 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
+      - name: Sync update manifest from Gitee
+        run: |
+          mkdir -p public/update
+          curl -fsSL \
+            "https://raw.giteeusercontent.com/qq2057187934/push-drop-vid/raw/master/update/latest.json" \
+            -o public/update/latest.json
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 

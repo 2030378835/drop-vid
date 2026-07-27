@@ -73,7 +73,7 @@ export function Hero(): JSX.Element {
   const versionLabel = selected ? `.dmg (${selected.label})` : '.dmg'
 
   const downloadHint = loading
-    ? '正在从 Gitee 获取最新下载链接…'
+    ? '正在获取最新下载链接…'
     : isWindows
       ? winCanDownload
         ? `点击按钮下载 Windows 安装包（.exe）· v${version}`

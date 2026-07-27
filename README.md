@@ -37,12 +37,21 @@ VITE_BASE=/drop-vid/ pnpm build
 
 ## 下载链接
 
-官网会在**运行时**从 Gitee 拉取最新版本清单（与桌面端共用数据源）：
+Gitee raw 会 **302 跳转到 CDN**，且响应**不含 `Access-Control-Allow-Origin`**，GitHub Pages 上**不能**在浏览器里跨域直连 Gitee。
+
+官网改为读取**同域**清单（无 CORS 问题）：
 
 ```
-https://gitee.com/qq2057187934/push-drop-vid/raw/master/update/latest.json
+https://2030378835.github.io/drop-vid/update/latest.json
 ```
 
-发版时只需更新 **push-drop-vid** 仓库中的 [`update/latest.json`](update/latest.json)，官网刷新后即可展示最新版本与下载地址，无需再改官网代码。
+该文件来源：
 
-若 Gitee 暂不可达（网络 / CORS），会回退到 [`src/config/downloads.ts`](src/config/downloads.ts) 中的 `FALLBACK_VERSION` 兜底链接。
+1. 仓库内 [`public/update/latest.json`](public/update/latest.json)（本地 dev / 提交兜底）
+2. **CI 部署前**从 Gitee CDN 同步（[`deploy.yml`](.github/workflows/deploy.yml)）
+
+发版流程：更新 **push-drop-vid** 的 `update/latest.json` → **重新部署官网**（push `drop-vid` main 或手动 Run workflow）→ 用户刷新即可看到最新下载链接。
+
+本地 `pnpm dev` 会优先读 `public/update/latest.json`；也可通过 Vite 代理拉 Gitee 最新版（见 `vite.config.ts`）。
+
+若同域文件与 Gitee 均不可用，回退 [`src/config/downloads.ts`](src/config/downloads.ts) 中的 `FALLBACK_VERSION`。

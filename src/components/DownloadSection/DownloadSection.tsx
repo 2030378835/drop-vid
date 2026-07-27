@@ -18,7 +18,7 @@ export function DownloadSection(): React.JSX.Element {
     <section className={`${section.section} ${styles.wrap}`} id="download">
       <p className={section.kicker}>下载</p>
       <h2 className={section.title}>获取 DropVid</h2>
-      <p className={section.desc}>{loading ? '正在从 Gitee 获取最新版本信息…' : desc}</p>
+      <p className={section.desc}>{loading ? '正在获取最新版本信息…' : desc}</p>
 
       <h3 className={styles.groupTitle}>macOS</h3>
       <div className={styles.actions}>
@@ -68,7 +68,7 @@ export function DownloadSection(): React.JSX.Element {
         {loading
           ? '请稍候…'
           : ready
-            ? `下载后请查看下方「安装说明」，了解 Mac / Windows 首次启动时的系统安全提示如何处理。${fromRemote ? '' : '（当前使用本地兜底链接，Gitee 暂不可达）'}`
+            ? `下载后请查看下方「安装说明」，了解 Mac / Windows 首次启动时的系统安全提示如何处理。${fromRemote ? '' : '（当前使用本地兜底链接）'}`
             : '暂未获取到安装包链接，请检查网络后刷新页面。'}
       </p>
     </section>

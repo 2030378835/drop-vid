@@ -5,7 +5,7 @@
 import type { UpdateManifest } from '../types/updateManifest'
 
 /** 拉取失败时的兜底版本（与 push-drop-vid 保持大致同步） */
-export const FALLBACK_VERSION = '0.1.3'
+export const FALLBACK_VERSION = '0.1.4'
 
 export type DownloadArch = 'arm64' | 'x64'
 
