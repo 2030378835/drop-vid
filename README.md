@@ -37,12 +37,12 @@ VITE_BASE=/drop-vid/ pnpm build
 
 ## 下载链接
 
-只改一处配置：[`src/config/downloads.ts`](src/config/downloads.ts)
+官网会在**运行时**从 Gitee 拉取最新版本清单（与桌面端共用数据源）：
 
-```ts
-export const VERSION = '0.1.2'
+```
+https://gitee.com/qq2057187934/push-drop-vid/raw/master/update/latest.json
 ```
 
-安装包地址会按 `v${VERSION}` 自动拼到 GitHub Release。`href` 为空或 `#` 时，对应按钮不可点。
+发版时只需更新 **push-drop-vid** 仓库中的 [`update/latest.json`](update/latest.json)，官网刷新后即可展示最新版本与下载地址，无需再改官网代码。
 
-应用内更新元数据见 [`update/latest.json`](update/latest.json)（与 `push-drop-vid` 保持一致）。
+若 Gitee 暂不可达（网络 / CORS），会回退到 [`src/config/downloads.ts`](src/config/downloads.ts) 中的 `FALLBACK_VERSION` 兜底链接。

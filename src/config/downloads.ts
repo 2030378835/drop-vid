@@ -1,70 +1,141 @@
 /**
- * 官网下载链接配置 —— 发版时只改这一处。
- * href 留空或 '#' 时，对应按钮不可用（页面会提示待发布）。
+ * 下载按钮配置与工具函数。
+ * 运行时优先从 Gitee latest.json 拉取；失败时使用下方兜底版本。
  */
-export const VERSION = '0.1.3'
+import type { UpdateManifest } from '../types/updateManifest'
+
+/** 拉取失败时的兜底版本（与 push-drop-vid 保持大致同步） */
+export const FALLBACK_VERSION = '0.1.3'
+
 export type DownloadArch = 'arm64' | 'x64'
 
 export type DownloadItem = {
-  /** 架构标识 */
   arch: DownloadArch
-  /** 按钮主标题 */
   label: string
-  /** 副标题说明 */
   detail: string
-  /** 安装包直链（dmg / zip / GitHub Release 均可） */
   href: string
-  /** 是否为主推按钮（Apple Silicon） */
   primary?: boolean
 }
 
-/** macOS 安装包下载列表（对应 GitHub Release） */
-export const MAC_DOWNLOADS: DownloadItem[] = [
+export type WinDownloadItem = {
+  label: string
+  detail: string
+  href: string
+}
+
+export type SiteDownloads = {
+  version: string
+  notes?: string
+  macDownloads: DownloadItem[]
+  winDownload: WinDownloadItem
+}
+
+const MAC_SPECS: Array<{
+  arch: DownloadArch
+  platformKey: 'darwin-arm64' | 'darwin-x64'
+  label: string
+  detail: string
+  primary?: boolean
+}> = [
   {
     arch: 'arm64',
+    platformKey: 'darwin-arm64',
     label: 'Apple Silicon',
     detail: 'Apple Silicon · arm64',
-    href: `https://github.com/2030378835/drop-vid/releases/download/v${VERSION}/DropVid-${VERSION}-arm64.dmg`,
     primary: true
   },
   {
     arch: 'x64',
+    platformKey: 'darwin-x64',
     label: 'Intel',
-    detail: 'Intel · x64',
-    href: `https://github.com/2030378835/drop-vid/releases/download/v${VERSION}/DropVid-${VERSION}-x64.dmg`
+    detail: 'Intel · x64'
   }
 ]
 
-/** Windows 安装包（对应 GitHub Release） */
-export const WIN_DOWNLOAD = {
-  label: 'Windows',
-  detail: 'Windows 10 / 11 · 64 位',
-  href: `https://github.com/2030378835/drop-vid/releases/download/v${VERSION}/DropVid-${VERSION}-setup.exe`
-} as const
+function normalizeVersion(raw?: string): string {
+  return (raw ?? FALLBACK_VERSION).trim().replace(/^v/i, '')
+}
+
+function buildHref(version: string, arch: DownloadArch): string {
+  return `https://github.com/2030378835/drop-vid/releases/download/v${version}/DropVid-${version}-${arch}.dmg`
+}
+
+function buildWinHref(version: string): string {
+  return `https://github.com/2030378835/drop-vid/releases/download/v${version}/DropVid-${version}-setup.exe`
+}
+
+/** 本地兜底下载配置（Gitee 不可用时） */
+export function buildFallbackDownloads(): SiteDownloads {
+  const version = FALLBACK_VERSION
+  return {
+    version,
+    macDownloads: MAC_SPECS.map((spec) => ({
+      arch: spec.arch,
+      label: spec.label,
+      detail: spec.detail,
+      href: buildHref(version, spec.arch),
+      primary: spec.primary
+    })),
+    winDownload: {
+      label: 'Windows',
+      detail: 'Windows 10 / 11 · 64 位',
+      href: buildWinHref(version)
+    }
+  }
+}
+
+/** 将 Gitee latest.json 转为官网下载结构 */
+export function downloadsFromManifest(manifest: UpdateManifest): SiteDownloads {
+  const version = normalizeVersion(manifest.version)
+  const downloads = manifest.downloads ?? {}
+
+  const macDownloads = MAC_SPECS.map((spec) => ({
+    arch: spec.arch,
+    label: spec.label,
+    detail: spec.detail,
+    href: downloads[spec.platformKey]?.trim() || buildHref(version, spec.arch),
+    primary: spec.primary
+  }))
+
+  const winDownload: WinDownloadItem = {
+    label: 'Windows',
+    detail: 'Windows 10 / 11 · 64 位',
+    href: downloads['win32-x64']?.trim() || buildWinHref(version)
+  }
+
+  return {
+    version,
+    notes: manifest.notes?.trim(),
+    macDownloads,
+    winDownload
+  }
+}
 
 export function isDownloadReady(href: string): boolean {
   const value = href.trim()
   return value.length > 0 && value !== '#'
 }
 
-export function hasAnyDownload(): boolean {
+export function hasAnyDownload(downloads: SiteDownloads): boolean {
   return (
-    MAC_DOWNLOADS.some((item) => isDownloadReady(item.href)) ||
-    isDownloadReady(WIN_DOWNLOAD.href)
+    downloads.macDownloads.some((item) => isDownloadReady(item.href)) ||
+    isDownloadReady(downloads.winDownload.href)
   )
 }
 
-export function getDownloadByArch(arch: DownloadArch): DownloadItem | undefined {
-  return MAC_DOWNLOADS.find((item) => item.arch === arch)
+export function getDownloadByArch(
+  macDownloads: DownloadItem[],
+  arch: DownloadArch
+): DownloadItem | undefined {
+  return macDownloads.find((item) => item.arch === arch)
 }
 
-/** 触发安装包下载（跨域直链用跳转/新开，同域可走 download） */
+/** 触发安装包下载 */
 export function startDownload(href: string): void {
   if (!isDownloadReady(href)) return
   const anchor = document.createElement('a')
   anchor.href = href
   anchor.rel = 'noopener noreferrer'
-  // 外链一般由浏览器/CDN 处理 Content-Disposition；保留 download 有助于同域文件名
   const fileName = href.split('/').pop()
   if (fileName && /\.(dmg|zip|pkg|exe)(\?|$)/i.test(fileName)) {
     anchor.setAttribute('download', fileName.split('?')[0] ?? fileName)

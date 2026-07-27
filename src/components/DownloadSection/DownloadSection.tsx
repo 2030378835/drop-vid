@@ -1,30 +1,29 @@
 import { motion } from 'framer-motion'
-import {
-  VERSION,
-  MAC_DOWNLOADS,
-  WIN_DOWNLOAD,
-  hasAnyDownload,
-  isDownloadReady
-} from '../../config/downloads'
+import { hasAnyDownload, isDownloadReady } from '../../config/downloads'
+import { useLatestDownloads } from '../../hooks/useLatestDownloads'
 import section from '../Section/Section.module.css'
 import styles from './DownloadSection.module.css'
 
 export function DownloadSection(): React.JSX.Element {
-  const ready = hasAnyDownload()
-  const winReady = isDownloadReady(WIN_DOWNLOAD.href)
+  const { loading, fromRemote, downloads } = useLatestDownloads()
+  const { version, notes, macDownloads, winDownload } = downloads
+  const ready = hasAnyDownload(downloads)
+  const winReady = isDownloadReady(winDownload.href)
+
+  const desc = notes
+    ? notes
+    : `当前为内测版 v${version}。请选择与你的系统匹配的安装包。`
 
   return (
     <section className={`${section.section} ${styles.wrap}`} id="download">
       <p className={section.kicker}>下载</p>
       <h2 className={section.title}>获取 DropVid</h2>
-      <p className={section.desc}>
-        当前为内测版 v{VERSION}。新增历史库收藏/标签、剪贴板询问下载与托盘常驻。请选择与你的系统匹配的安装包。
-      </p>
+      <p className={section.desc}>{loading ? '正在从 Gitee 获取最新版本信息…' : desc}</p>
 
       <h3 className={styles.groupTitle}>macOS</h3>
       <div className={styles.actions}>
-        {MAC_DOWNLOADS.map((item, index) => {
-          const enabled = isDownloadReady(item.href)
+        {macDownloads.map((item, index) => {
+          const enabled = !loading && isDownloadReady(item.href)
           return (
             <motion.a
               key={item.arch}
@@ -49,26 +48,28 @@ export function DownloadSection(): React.JSX.Element {
       <h3 className={styles.groupTitle}>Windows</h3>
       <div className={`${styles.actions} ${styles.actionsSingle}`}>
         <motion.a
-          className={winReady ? styles.primary : styles.secondary}
-          href={winReady ? WIN_DOWNLOAD.href : undefined}
-          aria-disabled={!winReady}
+          className={winReady && !loading ? styles.primary : styles.secondary}
+          href={winReady && !loading ? winDownload.href : undefined}
+          aria-disabled={!winReady || loading}
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.12 }}
           onClick={(event) => {
-            if (!winReady) event.preventDefault()
+            if (!winReady || loading) event.preventDefault()
           }}
         >
-          <strong>{WIN_DOWNLOAD.label}</strong>
-          <span>{WIN_DOWNLOAD.detail}</span>
+          <strong>{winDownload.label}</strong>
+          <span>{winDownload.detail}</span>
         </motion.a>
       </div>
 
       <p className={styles.note}>
-        {ready
-          ? '下载后请查看下方「安装说明」，了解 Mac / Windows 首次启动时的系统安全提示如何处理。'
-          : '安装包链接尚未配置：请编辑 src/config/downloads.ts 填入正式地址。'}
+        {loading
+          ? '请稍候…'
+          : ready
+            ? `下载后请查看下方「安装说明」，了解 Mac / Windows 首次启动时的系统安全提示如何处理。${fromRemote ? '' : '（当前使用本地兜底链接，Gitee 暂不可达）'}`
+            : '暂未获取到安装包链接，请检查网络后刷新页面。'}
       </p>
     </section>
   )

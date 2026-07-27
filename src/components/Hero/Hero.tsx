@@ -2,13 +2,12 @@ import { useEffect, useMemo, useRef, useState, type JSX } from 'react'
 import { motion } from 'framer-motion'
 import logo from '../../assets/logo.png'
 import {
-  MAC_DOWNLOADS,
-  WIN_DOWNLOAD,
   getDownloadByArch,
   isDownloadReady,
   startDownload,
   type DownloadArch
 } from '../../config/downloads'
+import { useLatestDownloads } from '../../hooks/useLatestDownloads'
 import { detectMacArch } from '../../utils/detectMacArch'
 import { detectClientPlatform, type ClientPlatform } from '../../utils/detectClientPlatform'
 import styles from './Hero.module.css'
@@ -20,6 +19,9 @@ const LEAD_COPY: Record<ClientPlatform, string> = {
 }
 
 export function Hero(): JSX.Element {
+  const { loading, downloads } = useLatestDownloads()
+  const { version, macDownloads, winDownload } = downloads
+
   const [platform] = useState<ClientPlatform>(() => detectClientPlatform())
   const [arch, setArch] = useState<DownloadArch>('arm64')
   const [archReady, setArchReady] = useState(false)
@@ -65,18 +67,20 @@ export function Hero(): JSX.Element {
     }
   }, [menuOpen])
 
-  const selected = useMemo(() => getDownloadByArch(arch), [arch])
+  const selected = useMemo(() => getDownloadByArch(macDownloads, arch), [macDownloads, arch])
   const macCanDownload = Boolean(selected && isDownloadReady(selected.href))
-  const winCanDownload = isDownloadReady(WIN_DOWNLOAD.href)
+  const winCanDownload = isDownloadReady(winDownload.href)
   const versionLabel = selected ? `.dmg (${selected.label})` : '.dmg'
 
-  const downloadHint = isWindows
-    ? winCanDownload
-      ? '点击按钮下载 Windows 安装包（.exe）'
-      : '下载链接尚未配置，请先填写 src/config/downloads.ts'
-    : macCanDownload
-      ? '点击左侧直接下载；右侧可切换 Apple Silicon / Intel'
-      : '下载链接尚未配置，请先填写 src/config/downloads.ts'
+  const downloadHint = loading
+    ? '正在从 Gitee 获取最新下载链接…'
+    : isWindows
+      ? winCanDownload
+        ? `点击按钮下载 Windows 安装包（.exe）· v${version}`
+        : '暂未获取到 Windows 安装包链接，请稍后刷新'
+      : macCanDownload
+        ? `点击左侧直接下载 · v${version}；右侧可切换 Apple Silicon / Intel`
+        : '暂未获取到 macOS 安装包链接，请稍后刷新'
 
   return (
     <section className={styles.hero}>
@@ -132,31 +136,31 @@ export function Hero(): JSX.Element {
             <button
               type="button"
               className={styles.winDownload}
-              disabled={!winCanDownload}
-              onClick={() => startDownload(WIN_DOWNLOAD.href)}
+              disabled={loading || !winCanDownload}
+              onClick={() => startDownload(winDownload.href)}
             >
-              下载 Windows 版
+              {loading ? '加载中…' : '下载 Windows 版'}
             </button>
           ) : (
             <div
-              className={`${styles.split} ${!macCanDownload ? styles.splitDisabled : ''}`}
+              className={`${styles.split} ${!macCanDownload || loading ? styles.splitDisabled : ''}`}
               ref={splitRef}
             >
               <button
                 type="button"
                 className={styles.splitAction}
-                disabled={!macCanDownload}
+                disabled={loading || !macCanDownload}
                 onClick={() => {
                   if (selected) startDownload(selected.href)
                 }}
               >
-                下载
+                {loading ? '加载中…' : '下载'}
               </button>
               <span className={styles.splitDivider} aria-hidden />
               <button
                 type="button"
                 className={styles.splitMenuBtn}
-                disabled={!archReady}
+                disabled={loading || !archReady}
                 aria-haspopup="listbox"
                 aria-expanded={menuOpen}
                 onClick={() => setMenuOpen((open) => !open)}
@@ -169,7 +173,7 @@ export function Hero(): JSX.Element {
 
               {menuOpen ? (
                 <ul className={styles.menu} role="listbox" aria-label="选择 macOS 版本">
-                  {MAC_DOWNLOADS.map((item) => {
+                  {macDownloads.map((item) => {
                     const enabled = isDownloadReady(item.href)
                     return (
                       <li key={item.arch} role="option" aria-selected={item.arch === arch}>
