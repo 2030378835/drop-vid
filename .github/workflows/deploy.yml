@@ -42,6 +42,24 @@ jobs:
             "https://raw.giteeusercontent.com/qq2057187934/push-drop-vid/raw/master/update/latest.json" \
             -o public/update/latest.json
 
+      # GitHub Pages 为 HTTPS，直连 HTTP API 会被混合内容拦截；部署前同步到同域静态文件
+      - name: Sync cloud config from API
+        env:
+          DROPVID_API_BASE: ${{ vars.DROPVID_API_BASE }}
+        run: |
+          API_BASE="${DROPVID_API_BASE:-http://192.144.171.10:3000}"
+          mkdir -p public/config
+          curl -fsSL "${API_BASE}/api/v1/config/platforms" -o public/config/platforms.json
+          curl -fsSL "${API_BASE}/api/v1/config/limits" -o public/config/limits.json
+          python3 - <<'PY'
+          import json, pathlib
+          root = pathlib.Path('public/config')
+          for name in ('platforms.json', 'limits.json'):
+              data = json.loads((root / name).read_text())
+              assert data.get('ok') is True, name
+          print('cloud config synced')
+          PY
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 

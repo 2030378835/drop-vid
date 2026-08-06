@@ -1,0 +1,1 @@
+{"ok":true,"limits":{"guest":{"dailyDownload":5},"free":{"dailyDownload":10,"cloudHistory":50},"pro":{"dailyDownload":-1,"cloudHistory":500}}}
