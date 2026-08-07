@@ -1,26 +1,22 @@
 {
-  "name": "drop-vid",
+  "name": "@dropvid/account-app",
+  "version": "0.1.0",
   "private": true,
-  "version": "0.1.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:account": "pnpm --filter @dropvid/account-app dev",
-    "build": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json && vite build",
-    "build:account": "pnpm --filter @dropvid/account-app build",
+    "build": "tsc --noEmit && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "@dropvid/account": "workspace:*",
     "@dropvid/shared": "workspace:*",
-    "@dropvid/site": "workspace:*",
     "@dropvid/ui": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.18.2"
   },
   "devDependencies": {
-    "@types/node": "^26.1.1",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",

@@ -1,0 +1,884 @@
+/* 账户控制台 — 侧边栏 + 内容区，偏工具型中性色 */
+
+.shell {
+  display: flex;
+  min-height: 100vh;
+  background: #ececee;
+  color: var(--ink);
+}
+
+/* —— 侧边栏 —— */
+
+.sidebar {
+  width: 240px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 12px;
+  background: #ececee;
+  border-right: 1px solid rgba(15, 17, 21, 0.06);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.backLink:hover {
+  background: rgba(15, 17, 21, 0.05);
+  color: var(--ink);
+}
+
+.brandRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px 16px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.sidebarNav {
+  flex: 1;
+}
+
+.navGroup + .navGroup {
+  margin-top: 18px;
+}
+
+.navGroup ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.navGroupTitle {
+  margin: 0 0 6px;
+  padding: 0 10px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  font-weight: 500;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.navItem:hover {
+  background: rgba(15, 17, 21, 0.05);
+  color: var(--ink);
+}
+
+.navItemActive {
+  background: rgba(15, 17, 21, 0.08);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.sidebarProfile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding: 10px 8px 4px;
+  border-top: 1px solid rgba(15, 17, 21, 0.06);
+}
+
+.profileAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: #fff;
+  border: 1px solid rgba(15, 17, 21, 0.08);
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--ink-soft);
+}
+
+.profileMeta {
+  min-width: 0;
+  display: grid;
+  gap: 1px;
+}
+
+.profileMeta strong {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profileMeta span {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* —— 主内容 —— */
+
+.main {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  overflow-x: hidden;
+  padding: 28px clamp(164px, 6vw, 256px) 64px;
+}
+
+.mainHead {
+  margin-bottom: 24px;
+}
+
+.mainHead h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.mainBody {
+  width: 100%;
+  min-width: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.analyticsToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid rgba(15, 17, 21, 0.07);
+}
+
+.analyticsToolbarHint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* —— 面板卡片 —— */
+
+.panel {
+  min-width: 0;
+  padding: 20px 22px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid rgba(15, 17, 21, 0.07);
+}
+
+.panelHead {
+  margin-bottom: 18px;
+}
+
+.panelHead h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.panelHead p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.panelHeadRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.panelHeadRowAlignEnd {
+  align-items: flex-end;
+}
+
+.heatmapMetric {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.heatmapMetricLabel {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.heatmapMetricValue {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3.5vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.heatmapMetricValue small {
+  font-size: 0.48em;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+
+.panelHeadActions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.panelExportBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid rgba(15, 17, 21, 0.12);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 550;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.panelExportBtn:hover:not(:disabled) {
+  background: #f8f8f9;
+}
+
+.panelExportBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.panelFoot {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(15, 17, 21, 0.06);
+}
+
+/* —— 统计行 —— */
+
+.statRow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.statBox {
+  padding: 14px;
+  border-radius: 10px;
+  background: #f8f8f9;
+  border: 1px solid rgba(15, 17, 21, 0.05);
+}
+
+.statLabel {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.statValue {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+/* —— 字段行（Settings 风格） —— */
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(15, 17, 21, 0.05);
+}
+
+.fieldRow:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.fieldRow:first-of-type {
+  padding-top: 0;
+}
+
+.fieldLabel {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.fieldValue {
+  font-size: 13.5px;
+  color: var(--ink);
+}
+
+.inlineLink {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.inlineLink:hover {
+  opacity: 0.75;
+}
+
+.inlineLinkBtn {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.inlineLinkBtn:hover {
+  opacity: 0.75;
+}
+
+/* —— 进度条 —— */
+
+.progressWrap {
+  display: grid;
+  gap: 6px;
+}
+
+.progressTrack {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(15, 17, 21, 0.06);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--ink);
+  transition: width 0.3s ease;
+}
+
+.progressText {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.usageBlock + .usageBlock {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(15, 17, 21, 0.05);
+}
+
+.usageHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.usageHead span {
+  color: var(--muted);
+}
+
+.usageHead strong {
+  font-weight: 650;
+}
+
+.usageHint {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* —— 分段选择 —— */
+
+.segmented {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: 8px;
+  background: #f3f3f4;
+  border: 1px solid rgba(15, 17, 21, 0.06);
+}
+
+.segmentBtn {
+  padding: 5px 12px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 550;
+  cursor: pointer;
+}
+
+.segmentBtnActive {
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgba(15, 17, 21, 0.06);
+}
+
+/* —— 柱状图 —— */
+
+.chartWrap {
+  padding-top: 4px;
+}
+
+.barChart {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(4px, 0.6vw, 10px);
+  height: clamp(160px, 22vh, 220px);
+  padding-bottom: 22px;
+}
+
+.barCol {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  position: relative;
+}
+
+.barTrack {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.barFill {
+  width: min(100%, 28px);
+  border-radius: 4px 4px 2px 2px;
+  background: var(--ink);
+  opacity: 0.85;
+  transition: opacity 0.15s;
+}
+
+.barCol:hover .barFill {
+  opacity: 1;
+}
+
+.barCol > span {
+  margin-top: 8px;
+  font-size: 10px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.barTooltip {
+  position: absolute;
+  top: 0;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 11px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity 0.12s;
+}
+
+.barTooltip[data-show] {
+  opacity: 1;
+}
+
+/* —— 表格单元格辅助 —— */
+
+.tablePlatform {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+}
+
+.tablePlatform span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cellTitle {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cellSub {
+  display: block;
+  margin-top: 2px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.cellLink {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-size: 12px;
+}
+
+.cellLink:hover {
+  opacity: 0.75;
+}
+
+.tablePct {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tablePctBar {
+  flex: 1;
+  max-width: 80px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(15, 17, 21, 0.06);
+  overflow: hidden;
+}
+
+.tablePctBar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--ink);
+}
+
+.tablePct span {
+  color: var(--muted);
+  font-size: 12px;
+  min-width: 32px;
+}
+
+.summaryStrip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(15, 17, 21, 0.05);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* —— 导出 —— */
+
+.exportList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+}
+
+.exportList li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(15, 17, 21, 0.05);
+}
+
+.exportList li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.exportList li:first-child {
+  padding-top: 0;
+}
+
+.exportList strong {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.exportList span {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.exportMsg {
+  margin: 14px 0 0;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+/* —— 设备列表 —— */
+
+.deviceList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.deviceRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(15, 17, 21, 0.05);
+}
+
+.deviceRow:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.deviceMain strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.deviceMain strong em {
+  font-style: normal;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(15, 17, 21, 0.06);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.deviceMain span {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.deviceTag {
+  flex-shrink: 0;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #f3f3f4;
+  font-size: 11px;
+  font-weight: 550;
+  color: var(--muted);
+}
+
+/* —— 按钮 —— */
+
+.outlineBtn,
+.linkBtn,
+.dangerBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 550;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.outlineBtn {
+  border: 1px solid rgba(15, 17, 21, 0.12);
+  background: #fff;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.outlineBtn:hover:not(:disabled) {
+  background: #f8f8f9;
+}
+
+.outlineBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.linkBtn {
+  border: none;
+  background: var(--ink);
+  color: #fff;
+  text-decoration: none;
+}
+
+.linkBtn:hover {
+  opacity: 0.88;
+}
+
+.dangerBtn {
+  border: 1px solid rgba(15, 17, 21, 0.12);
+  background: #fff;
+  color: #b42318;
+}
+
+.dangerBtn:hover {
+  background: #fef3f2;
+  border-color: rgba(180, 35, 24, 0.2);
+}
+
+.emptyHint,
+.errorHint {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.emptyHint {
+  color: var(--muted);
+}
+
+.errorHint {
+  color: #b42318;
+  margin-bottom: 12px;
+}
+
+/* —— 移动端 Tab —— */
+
+.mobileTabs {
+  display: none;
+  gap: 6px;
+  overflow-x: auto;
+  margin-bottom: 16px;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobileTab {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  border: 1px solid rgba(15, 17, 21, 0.08);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 550;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.mobileTabActive {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
+/* —— 响应式 —— */
+
+@media (max-width: 900px) {
+  .shell {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid rgba(15, 17, 21, 0.06);
+    padding-bottom: 12px;
+  }
+
+  .sidebarNav {
+    display: none;
+  }
+
+  .sidebarProfile {
+    display: none;
+  }
+
+  .mobileTabs {
+    display: flex;
+  }
+
+  .main {
+    padding-top: 20px;
+  }
+
+  .statRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fieldRow {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 520px) {
+  .statRow {
+    grid-template-columns: 1fr;
+  }
+
+  .exportList li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

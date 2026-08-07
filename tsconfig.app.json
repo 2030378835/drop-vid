@@ -17,7 +17,17 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "paths": {
+      "@dropvid/shared": ["./packages/shared/src/index.ts"],
+      "@dropvid/shared/*": ["./packages/shared/src/*"],
+      "@dropvid/ui": ["./packages/ui/src/index.ts"],
+      "@dropvid/ui/*": ["./packages/ui/src/*"],
+      "@dropvid/account": ["./packages/account/src/index.ts"],
+      "@dropvid/account/*": ["./packages/account/src/*"],
+      "@dropvid/site": ["./packages/site/src/index.ts"],
+      "@dropvid/site/*": ["./packages/site/src/*"]
+    }
   },
-  "include": ["src"]
+  "include": ["src", "packages/shared/src", "packages/ui/src", "packages/account/src", "packages/site/src"]
 }

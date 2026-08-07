@@ -1,0 +1,21 @@
+{
+  "name": "@dropvid/site",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles/global.css": "./src/styles/global.css"
+  },
+  "dependencies": {
+    "@dropvid/account": "workspace:*",
+    "@dropvid/shared": "workspace:*",
+    "@dropvid/ui": "workspace:*",
+    "framer-motion": "^12.4.7"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.0.0"
+  }
+}

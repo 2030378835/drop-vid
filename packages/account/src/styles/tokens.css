@@ -1,0 +1,32 @@
+:root {
+  --ink: #0f1115;
+  --ink-soft: #3a3f4b;
+  --muted: #6b7280;
+  --line: rgba(15, 17, 21, 0.08);
+  --line-strong: rgba(15, 17, 21, 0.14);
+  --surface: #ffffff;
+  --bg: #f7f8fa;
+  --font-display: 'Outfit', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --font-body: 'DM Sans', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}

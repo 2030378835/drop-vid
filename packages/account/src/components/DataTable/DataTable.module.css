@@ -1,0 +1,128 @@
+/* 通用数据表格 */
+
+.emptyHint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.tableFixed {
+  table-layout: fixed;
+}
+
+.table th {
+  padding: 8px 10px 8px 0;
+  text-align: left;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 550;
+  border-bottom: 1px solid rgba(15, 17, 21, 0.06);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 10px 10px 10px 0;
+  border-bottom: 1px solid rgba(15, 17, 21, 0.04);
+  vertical-align: middle;
+}
+
+.table th:first-child,
+.table td:first-child {
+  padding-left: 0;
+}
+
+.table th:last-child,
+.table td:last-child {
+  padding-right: 0;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.cellEllipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cellWrap {
+  white-space: normal;
+}
+
+.alignRight {
+  text-align: right;
+}
+
+.alignCenter {
+  text-align: center;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(15, 17, 21, 0.05);
+}
+
+.paginationInfo {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.paginationActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.paginationBtn {
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid rgba(15, 17, 21, 0.12);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 550;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.paginationBtn:hover:not(:disabled) {
+  background: #f8f8f9;
+}
+
+.paginationBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(15, 17, 21, 0.05);
+  font-size: 12px;
+  color: var(--muted);
+}

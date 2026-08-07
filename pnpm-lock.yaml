@@ -8,6 +8,18 @@ importers:
 
   .:
     dependencies:
+      '@dropvid/account':
+        specifier: workspace:*
+        version: link:packages/account
+      '@dropvid/shared':
+        specifier: workspace:*
+        version: link:packages/shared
+      '@dropvid/site':
+        specifier: workspace:*
+        version: link:packages/site
+      '@dropvid/ui':
+        specifier: workspace:*
+        version: link:packages/ui
       framer-motion:
         specifier: ^12.4.7
         version: 12.42.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -39,6 +51,93 @@ importers:
       vite:
         specifier: ^6.1.0
         version: 6.4.3(@types/node@26.1.1)
+
+  apps/account:
+    dependencies:
+      '@dropvid/account':
+        specifier: workspace:*
+        version: link:../../packages/account
+      '@dropvid/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+      '@dropvid/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      react:
+        specifier: ^19.0.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.7(react@19.2.7)
+      react-router-dom:
+        specifier: ^7.18.2
+        version: 7.18.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+    devDependencies:
+      '@types/react':
+        specifier: ^19.0.10
+        version: 19.2.17
+      '@types/react-dom':
+        specifier: ^19.0.4
+        version: 19.2.3(@types/react@19.2.17)
+      '@vitejs/plugin-react':
+        specifier: ^4.3.4
+        version: 4.7.0(vite@6.4.3(@types/node@26.1.1))
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vite:
+        specifier: ^6.1.0
+        version: 6.4.3(@types/node@26.1.1)
+
+  packages/account:
+    dependencies:
+      '@dropvid/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@dropvid/ui':
+        specifier: workspace:*
+        version: link:../ui
+      react:
+        specifier: ^19.0.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.7(react@19.2.7)
+      react-router-dom:
+        specifier: ^7.0.0
+        version: 7.18.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+
+  packages/shared: {}
+
+  packages/site:
+    dependencies:
+      '@dropvid/account':
+        specifier: workspace:*
+        version: link:../account
+      '@dropvid/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@dropvid/ui':
+        specifier: workspace:*
+        version: link:../ui
+      framer-motion:
+        specifier: ^12.4.7
+        version: 12.42.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      react:
+        specifier: ^19.0.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.7(react@19.2.7)
+      react-router-dom:
+        specifier: ^7.0.0
+        version: 7.18.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+
+  packages/ui:
+    dependencies:
+      react:
+        specifier: ^19.0.0
+        version: 19.2.7
 
 packages:
 

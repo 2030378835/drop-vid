@@ -1,0 +1,177 @@
+/* 每日下载热力图 — GitHub 贡献图风格 */
+
+.root {
+  display: grid;
+  gap: 16px;
+}
+
+.scrollWrap {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heatmap {
+  display: grid;
+  grid-template-columns: 14px repeat(var(--week-count), minmax(8px, 1fr));
+  grid-template-rows: 12px repeat(7, auto);
+  gap: var(--cell-gap);
+  width: 80%;
+  min-width: calc(14px + var(--week-count) * 8px + (var(--week-count) - 1) * var(--cell-gap));
+}
+
+.monthLabel {
+  display: flex;
+  align-items: flex-end;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.weekdayLabel {
+  display: flex;
+  align-items: center;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1;
+}
+
+.cell {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 3px;
+  border: none;
+  padding: 0;
+  cursor: default;
+  background: var(--heat-0);
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+
+.cell[data-level='1'] {
+  background: var(--heat-1);
+}
+
+.cell[data-level='2'] {
+  background: var(--heat-2);
+}
+
+.cell[data-level='3'] {
+  background: var(--heat-3);
+}
+
+.cell[data-level='4'] {
+  background: var(--heat-4);
+}
+
+.cell[data-empty] {
+  background: transparent;
+  pointer-events: none;
+}
+
+.cell:not([data-empty]):hover {
+  transform: scale(1.12);
+  box-shadow: 0 0 0 1px rgba(15, 17, 21, 0.12);
+  z-index: 1;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 100;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 11px;
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 8px));
+  box-shadow: 0 4px 14px rgba(15, 17, 21, 0.18);
+}
+
+.tooltipDate {
+  display: block;
+  font-weight: 550;
+}
+
+.tooltipCount {
+  display: block;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-top: 4px;
+  border-top: 1px solid rgba(15, 17, 21, 0.06);
+}
+
+.summaryRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 28px;
+}
+
+.summaryItem {
+  display: grid;
+  gap: 4px;
+}
+
+.summaryLabel {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.summaryValue {
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--ink);
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.legendSwatch {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+}
+
+.legendSwatch[data-level='0'] {
+  background: var(--heat-0);
+}
+
+.legendSwatch[data-level='1'] {
+  background: var(--heat-1);
+}
+
+.legendSwatch[data-level='2'] {
+  background: var(--heat-2);
+}
+
+.legendSwatch[data-level='3'] {
+  background: var(--heat-3);
+}
+
+.legendSwatch[data-level='4'] {
+  background: var(--heat-4);
+}
+
+.emptyHint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}

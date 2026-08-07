@@ -30,6 +30,14 @@ function spaFallback404(): Plugin {
 export default defineConfig({
   base,
   plugins: [react(), spaFallback404()],
+  resolve: {
+    alias: {
+      '@dropvid/shared': resolve(__dirname, 'packages/shared/src'),
+      '@dropvid/ui': resolve(__dirname, 'packages/ui/src'),
+      '@dropvid/account': resolve(__dirname, 'packages/account/src'),
+      '@dropvid/site': resolve(__dirname, 'packages/site/src')
+    }
+  },
   server: {
     // 本地 dev 通过代理读 Gitee CDN（浏览器直连会因 CORS / 302 失败）
     // 以及代理云端配置 API，避免跨域
