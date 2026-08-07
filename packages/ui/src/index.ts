@@ -6,6 +6,7 @@
  */
 
 export { Icon, type IconProps, type IconSize } from './Icon'
+export { Modal, type ModalProps, type ModalSize } from './Modal'
 export {
   ICON_ALIAS,
   ICONS,

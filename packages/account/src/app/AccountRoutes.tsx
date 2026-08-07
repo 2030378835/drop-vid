@@ -11,6 +11,7 @@ import {
   CloudHistoryPage,
   DevicesPage,
   LoginPage,
+  OAuthCallbackPage,
   OverviewPage,
   SettingsPage,
   UsagePage
@@ -23,6 +24,7 @@ export function AccountRoutes(): JSX.Element {
     <Routes>
       <Route path="/" element={<Navigate to={ACCOUNT_HOME_PATH} replace />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/login/oauth/callback" element={<OAuthCallbackPage />} />
       <Route path="/account" element={<AccountLayout />}>
         <Route index element={<Navigate to="overview" replace />} />
         <Route path="overview" element={<OverviewPage />} />
@@ -42,6 +44,7 @@ export function AccountRouteTree(): JSX.Element {
   return (
     <>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/login/oauth/callback" element={<OAuthCallbackPage />} />
       <Route path="/account" element={<AccountLayout />}>
         <Route index element={<Navigate to="overview" replace />} />
         <Route path="overview" element={<OverviewPage />} />

@@ -30,8 +30,19 @@ export function OverviewPage(): JSX.Element {
     <>
       <section className={styles.panel}>
         <header className={styles.panelHead}>
-          <h2>账户概览</h2>
-          <p>今日用量与云端下载概况。</p>
+          <div className={styles.panelHeadRow}>
+            <div>
+              <h2>账户概览</h2>
+              <p>今日用量与云端下载概况。</p>
+            </div>
+            {me?.plan !== 'pro' ? (
+              <div className={styles.panelHeadActions}>
+                <Link className={styles.linkBtn} to="/pricing">
+                  升级 Pro
+                </Link>
+              </div>
+            ) : null}
+          </div>
         </header>
 
         <div className={styles.statRow}>

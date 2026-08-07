@@ -4,17 +4,30 @@
  * @date 2026-08-07
  */
 
-import type { JSX } from 'react'
+import { useState, type JSX } from 'react'
 import { Link } from 'react-router-dom'
+import { Modal } from '@dropvid/ui'
 import { useAuth } from '../../auth/AuthProvider'
 import { formatDateTime } from '../../utils/format'
 import styles from '../../layout/AccountLayout.module.css'
 
 export function SettingsPage(): JSX.Element {
   const { me, loading, logout, session } = useAuth()
+  const [logoutOpen, setLogoutOpen] = useState(false)
+  const [logoutBusy, setLogoutBusy] = useState(false)
   const email = me?.user.email || session?.user.email || '—'
   const plan = me?.plan === 'pro' ? 'Pro' : '免费版'
   const joined = me?.user.createdAt ? formatDateTime(me.user.createdAt) : '—'
+
+  async function confirmLogout(): Promise<void> {
+    setLogoutBusy(true)
+    try {
+      await logout()
+      setLogoutOpen(false)
+    } finally {
+      setLogoutBusy(false)
+    }
+  }
 
   return (
     <>
@@ -53,11 +66,41 @@ export function SettingsPage(): JSX.Element {
           <p>退出后需重新登录；桌面客户端不受影响。</p>
         </header>
         <div className={styles.panelFoot}>
-          <button type="button" className={styles.dangerBtn} onClick={() => void logout()}>
+          <button type="button" className={styles.dangerBtn} onClick={() => setLogoutOpen(true)}>
             退出登录
           </button>
         </div>
       </section>
+
+      <Modal
+        open={logoutOpen}
+        onClose={() => {
+          if (!logoutBusy) setLogoutOpen(false)
+        }}
+        busy={logoutBusy}
+        title="确定退出登录？"
+        description="退出后需重新登录；桌面客户端不受影响。"
+        footer={
+          <>
+            <button
+              type="button"
+              className={styles.outlineBtn}
+              disabled={logoutBusy}
+              onClick={() => setLogoutOpen(false)}
+            >
+              取消
+            </button>
+            <button
+              type="button"
+              className={styles.dangerBtn}
+              disabled={logoutBusy}
+              onClick={() => void confirmLogout()}
+            >
+              {logoutBusy ? '退出中…' : '退出登录'}
+            </button>
+          </>
+        }
+      />
     </>
   )
 }

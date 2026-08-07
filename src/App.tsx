@@ -13,6 +13,7 @@ import {
   CloudHistoryPage,
   DevicesPage,
   LoginPage,
+  OAuthCallbackPage,
   OverviewPage,
   SettingsPage,
   UsagePage
@@ -29,6 +30,7 @@ export default function App(): JSX.Element {
           <Route path="/" element={<Home />} />
           <Route path="/pricing" element={<PricingPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/login/oauth/callback" element={<OAuthCallbackPage />} />
           <Route path="/account" element={<AccountLayout />}>
             <Route index element={<Navigate to="overview" replace />} />
             <Route path="overview" element={<OverviewPage />} />

@@ -6,6 +6,7 @@ export {
   useAuth,
   AccountLayout,
   LoginPage,
+  OAuthCallbackPage,
   OverviewPage,
   UsagePage,
   CloudHistoryPage,

@@ -1,41 +1,55 @@
 /**
  * @file 官网登录页
- * @description 默认邮箱验证码；可切换「DropVid 客户端确认登录」
+ * @description GitHub / 邮箱登录；支持 ?challenge= 为桌面客户端授权
  * @author qiangcan
- * @date 2026-08-07
+ * @date 2026-08-08
  */
 
-import { useEffect, useRef, useState, type FormEvent, type JSX } from 'react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { useEffect, useState, type FormEvent, type JSX } from 'react'
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom'
+import { Icon } from '@dropvid/ui'
 import {
-  createLoginChallenge,
-  pollLoginChallenge,
+  completeClientLoginChallenge,
+  getGitHubOAuthStartUrl,
+  peekClientLoginChallenge,
   sendLoginCode,
   verifyLoginCode
 } from '../../api/auth'
 import { useAuth } from '../../auth/AuthProvider'
+import { LEGAL_DOCUMENT_CODES } from '../../api/legalDocuments'
+import { LegalDocumentModal } from '../../components/LegalDocumentModal'
+import { useLegalDocumentViewer } from '../../hooks/useLegalDocumentViewer'
 import { ACCOUNT_HOME_PATH } from '../../routes/paths'
 import { AuthShell } from './AuthShell'
-import { Icon } from '@dropvid/ui'
 import styles from './LoginPage.module.css'
-
-type Mode = 'email' | 'client'
 
 export function LoginPage(): JSX.Element {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const challengeId = searchParams.get('challenge')?.trim() || ''
+  const oauthError = searchParams.get('oauth_error')?.trim() || ''
+
   const { session, loading, setSessionFromTokens } = useAuth()
-  const [mode, setMode] = useState<Mode>('email')
 
   const [email, setEmail] = useState('')
   const [code, setCode] = useState('')
   const [codeSent, setCodeSent] = useState(false)
   const [cooldown, setCooldown] = useState(0)
   const [busy, setBusy] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(oauthError || null)
   const [hint, setHint] = useState<string | null>(null)
 
-  const [clientStatus, setClientStatus] = useState<string | null>(null)
-  const pollTimer = useRef<number | null>(null)
+  const [clientLabel, setClientLabel] = useState<string | null>(null)
+  const [clientDone, setClientDone] = useState(false)
+
+  const {
+    viewCode,
+    loading: legalLoading,
+    error: legalError,
+    activeDocument,
+    openLegalDocument,
+    closeLegalDocument
+  } = useLegalDocumentViewer()
 
   useEffect(() => {
     if (cooldown <= 0) return
@@ -44,13 +58,50 @@ export function LoginPage(): JSX.Element {
   }, [cooldown])
 
   useEffect(() => {
+    if (!challengeId) return
+    let cancelled = false
+    void peekClientLoginChallenge(challengeId)
+      .then((peeked) => {
+        if (!cancelled) setClientLabel(peeked.clientDeviceLabel)
+      })
+      .catch(() => {
+        if (!cancelled) setError('登录请求已失效，请在客户端重新发起')
+      })
     return () => {
-      if (pollTimer.current) window.clearInterval(pollTimer.current)
+      cancelled = true
     }
-  }, [])
+  }, [challengeId])
 
-  if (!loading && session) {
+  useEffect(() => {
+    if (oauthError) setError(oauthError)
+  }, [oauthError])
+
+  const onGitHubLogin = (): void => {
+    window.location.assign(getGitHubOAuthStartUrl(challengeId || undefined))
+  }
+
+  if (!loading && session && !challengeId) {
     return <Navigate to={ACCOUNT_HOME_PATH} replace />
+  }
+
+  const completeForClient = async (accessToken: string, sessionId?: string): Promise<void> => {
+    if (!challengeId) return
+    await completeClientLoginChallenge(challengeId, accessToken, sessionId)
+    setClientDone(true)
+    setHint('已授权桌面客户端登录，请返回 DropVid 应用。')
+  }
+
+  const onOneClickClientLogin = async (): Promise<void> => {
+    if (!session?.accessToken || !challengeId) return
+    setError(null)
+    setBusy(true)
+    try {
+      await completeForClient(session.accessToken, session.sessionId)
+    } catch (e) {
+      setError(e instanceof Error ? e.message : '授权失败')
+    } finally {
+      setBusy(false)
+    }
   }
 
   const onSendCode = async (): Promise<void> => {
@@ -67,7 +118,7 @@ export function LoginPage(): JSX.Element {
       setCooldown(60)
       setHint(
         result.isNewUser
-          ? '验证码已发送。验证通过后将自动完成注册。'
+          ? '验证码已发送，验证通过后将自动完成注册。'
           : '验证码已发送，请查收邮箱。'
       )
     } catch (e) {
@@ -80,6 +131,14 @@ export function LoginPage(): JSX.Element {
   const onVerify = async (event: FormEvent): Promise<void> => {
     event.preventDefault()
     setError(null)
+    if (!email.trim()) {
+      setError('请输入邮箱')
+      return
+    }
+    if (!codeSent) {
+      await onSendCode()
+      return
+    }
     if (!code.trim() || code.trim().length !== 6) {
       setError('请输入 6 位验证码')
       return
@@ -88,6 +147,10 @@ export function LoginPage(): JSX.Element {
     try {
       const tokens = await verifyLoginCode(email, code)
       await setSessionFromTokens(tokens)
+      if (challengeId) {
+        await completeForClient(tokens.accessToken, tokens.sessionId)
+        return
+      }
       navigate(ACCOUNT_HOME_PATH, { replace: true })
     } catch (e) {
       setError(e instanceof Error ? e.message : '登录失败')
@@ -96,168 +159,130 @@ export function LoginPage(): JSX.Element {
     }
   }
 
-  const stopPolling = (): void => {
-    if (pollTimer.current) {
-      window.clearInterval(pollTimer.current)
-      pollTimer.current = null
-    }
-  }
-
-  const onStartClientLogin = async (): Promise<void> => {
-    setError(null)
-    setClientStatus(null)
-    stopPolling()
-    setBusy(true)
-    try {
-      const challenge = await createLoginChallenge()
-      setClientStatus('正在打开 DropVid 客户端…')
-      // 尝试唤醒本地客户端
-      window.location.href = challenge.deepLink
-
-      setClientStatus('请在 DropVid 客户端中确认登录。若未安装，请先下载客户端。')
-      pollTimer.current = window.setInterval(() => {
-        void (async () => {
-          try {
-            const polled = await pollLoginChallenge(challenge.challengeId)
-            if (polled.status === 'approved' && polled.tokens) {
-              stopPolling()
-              await setSessionFromTokens(polled.tokens)
-              navigate(ACCOUNT_HOME_PATH, { replace: true })
-              return
-            }
-            if (polled.status === 'denied') {
-              stopPolling()
-              setBusy(false)
-              setError('已在客户端拒绝本次登录')
-              setClientStatus(null)
-              return
-            }
-            if (polled.status === 'expired' || polled.expiresIn <= 0) {
-              stopPolling()
-              setBusy(false)
-              setError('确认已超时，请重试')
-              setClientStatus(null)
-            }
-          } catch (e) {
-            stopPolling()
-            setBusy(false)
-            setError(e instanceof Error ? e.message : '轮询失败')
-            setClientStatus(null)
-          }
-        })()
-      }, challenge.pollIntervalMs)
-    } catch (e) {
-      setError(e instanceof Error ? e.message : '无法发起客户端确认')
-      setBusy(false)
-    }
-  }
+  const title = challengeId ? '登录到 DropVid 客户端' : '登录 DropVid'
+  const subtitle = challengeId
+    ? clientLabel
+      ? `${clientLabel} 请求使用你的账户登录`
+      : '请在浏览器中完成验证以授权桌面客户端'
+    : '同步云端记录，随时随地使用'
 
   return (
-    <AuthShell>
-      <section className={styles.card}>
-          <p className={styles.kicker}>账户</p>
-          <h1 className={styles.title}>登录 DropVid</h1>
-          <p className={styles.desc}>默认使用邮箱验证码。也可像微信网页版一样，用客户端一键确认。</p>
+    <AuthShell
+      onOpenTerms={() => openLegalDocument(LEGAL_DOCUMENT_CODES.terms)}
+      onOpenPrivacy={() => openLegalDocument(LEGAL_DOCUMENT_CODES.privacy)}
+    >
+      <div className={styles.stack}>
+        <header className={styles.hero}>
+          <h1 className={styles.title}>{title}</h1>
+          <p className={styles.subtitle}>{subtitle}</p>
+        </header>
 
-          <div className={styles.tabs} role="tablist" aria-label="登录方式">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={mode === 'email'}
-              className={`${styles.tab} ${mode === 'email' ? styles.tabActive : ''}`}
-              onClick={() => {
-                stopPolling()
-                setMode('email')
-                setError(null)
-                setClientStatus(null)
-                setBusy(false)
-              }}
-            >
-              邮箱验证码
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={mode === 'client'}
-              className={`${styles.tab} ${mode === 'client' ? styles.tabActive : ''}`}
-              onClick={() => {
-                setMode('client')
-                setError(null)
-                setHint(null)
-              }}
-            >
-              客户端确认
-            </button>
-          </div>
-
-          {mode === 'email' ? (
-            <form className={styles.form} onSubmit={(e) => void onVerify(e)}>
-              <label className={styles.field}>
-                <span>邮箱</span>
-                <input
-                  type="email"
-                  autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@example.com"
-                  required
-                />
-              </label>
-
-              <div className={styles.codeRow}>
-                <label className={styles.field}>
-                  <span>验证码</span>
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    autoComplete="one-time-code"
-                    maxLength={6}
-                    value={code}
-                    onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                    placeholder="6 位数字"
-                    required={codeSent}
-                  />
-                </label>
-                <button
-                  type="button"
-                  className={styles.sendBtn}
-                  disabled={busy || cooldown > 0}
-                  onClick={() => void onSendCode()}
-                >
-                  {cooldown > 0 ? `${cooldown}s` : codeSent ? '重新发送' : '获取验证码'}
-                </button>
-              </div>
-
-              {hint ? <p className={styles.hint}>{hint}</p> : null}
-              {error ? <p className={styles.error}>{error}</p> : null}
-
-              <button type="submit" className={styles.submit} disabled={busy || !codeSent}>
-                {busy ? '登录中…' : '登录 / 注册'}
-              </button>
-            </form>
-          ) : (
+        <div className={styles.body}>
+          {challengeId && session && !clientDone ? (
             <div className={styles.clientPane}>
-              <p className={styles.clientLead}>
-                点击下方按钮将唤醒本机 DropVid。请在客户端弹窗中确认，即可完成官网登录。
-              </p>
+              {error ? <p className={styles.error}>{error}</p> : null}
               <button
                 type="button"
-                className={styles.submit}
+                className={styles.primaryBtn}
                 disabled={busy}
-                onClick={() => void onStartClientLogin()}
+                onClick={() => void onOneClickClientLogin()}
               >
-                <Icon name="devices" size={16} />
-                <span>{busy ? '等待客户端确认…' : '打开 DropVid 确认登录'}</span>
+                {busy ? '授权中…' : '一键登录客户端'}
               </button>
-              {clientStatus ? <p className={styles.hint}>{clientStatus}</p> : null}
-              {error ? <p className={styles.error}>{error}</p> : null}
-              <p className={styles.clientFoot}>
-                尚未安装？
-                <Link to={{ pathname: '/', hash: 'download' }}>前往下载</Link>
-              </p>
             </div>
+          ) : clientDone ? (
+            <div className={styles.clientPane}>
+              <p className={styles.success}>{hint}</p>
+              <button
+                type="button"
+                className={styles.primaryBtn}
+                onClick={() => navigate(ACCOUNT_HOME_PATH)}
+              >
+                进入账户中心
+              </button>
+            </div>
+          ) : (
+            <>
+              <button
+                type="button"
+                className={styles.oauthBtn}
+                disabled={busy}
+                onClick={onGitHubLogin}
+              >
+                <Icon name="github" size={18} aria-hidden />
+                使用 GitHub 登录
+              </button>
+
+              <div className={styles.divider} role="separator">
+                <span>或使用邮箱</span>
+              </div>
+
+              <form className={styles.form} onSubmit={(e) => void onVerify(e)}>
+                <label className={styles.field}>
+                  <span className={styles.fieldLabel}>邮箱</span>
+                  <input
+                    className={styles.input}
+                    type="email"
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="您的邮箱地址"
+                    required
+                  />
+                </label>
+
+                {codeSent ? (
+                  <div className={styles.field}>
+                    <span className={styles.fieldLabel}>验证码</span>
+                    <div className={styles.codeRow}>
+                      <input
+                        className={styles.input}
+                        type="text"
+                        inputMode="numeric"
+                        autoComplete="one-time-code"
+                        maxLength={6}
+                        value={code}
+                        onChange={(e) => setCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                        placeholder="6 位数字"
+                        required
+                      />
+                      <button
+                        type="button"
+                        className={styles.sendBtn}
+                        disabled={busy || cooldown > 0}
+                        onClick={() => void onSendCode()}
+                      >
+                        {cooldown > 0 ? `${cooldown}s` : '重新发送'}
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+
+                {error ? <p className={styles.error}>{error}</p> : null}
+                {hint ? <p className={styles.hint}>{hint}</p> : null}
+
+                <button type="submit" className={styles.primaryBtn} disabled={busy}>
+                  {busy
+                    ? '处理中…'
+                    : codeSent
+                      ? challengeId
+                        ? '登录并授权客户端'
+                        : '登录 / 注册'
+                      : '使用电子邮件继续'}
+                </button>
+              </form>
+            </>
           )}
-        </section>
+        </div>
+      </div>
+
+      <LegalDocumentModal
+        open={viewCode !== null}
+        loading={legalLoading}
+        error={legalError}
+        document={activeDocument}
+        onClose={closeLegalDocument}
+      />
     </AuthShell>
   )
 }
