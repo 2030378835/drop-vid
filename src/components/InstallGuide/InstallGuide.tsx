@@ -1,13 +1,14 @@
 import { motion } from 'framer-motion'
-import section from '../Section/Section.module.css'
+import { Icon } from '../Icon'
 import styles from './InstallGuide.module.css'
 
 export function InstallGuide(): React.JSX.Element {
   return (
-    <section className={`${section.section} ${styles.wrap}`} id="install">
-      <p className={section.kicker}>安装说明</p>
-      <h2 className={section.title}>首次安装与启动</h2>
-      <p className={section.desc}>
+    <section className={styles.wrap} id="install">
+      <div className={`layout ${styles.inner}`}>
+      <p className={styles.kicker}>安装说明</p>
+      <h2 className={styles.title}>首次安装与启动</h2>
+      <p className={styles.desc}>
         DropVid 当前为内测版，尚未购买 Apple / Microsoft 代码签名。首次打开时系统可能提示「无法验证开发者」或「未知发布者」，这是正常现象，按下面步骤即可正常使用。
       </p>
 
@@ -20,12 +21,18 @@ export function InstallGuide(): React.JSX.Element {
           transition={{ duration: 0.45 }}
         >
           <div className={styles.cardHead}>
-            <span className={styles.badge}>macOS</span>
+            <span className={styles.badge}>
+              <Icon name="mac" size={14} />
+              <span>macOS</span>
+            </span>
             <h3>Mac 安装</h3>
           </div>
 
           <div className={styles.block}>
-            <p className={styles.blockTitle}>安装步骤</p>
+            <p className={styles.blockTitle}>
+              <Icon name="download" size={13} />
+              <span>安装步骤</span>
+            </p>
             <ol className={styles.list}>
               <li>下载对应芯片的安装包（Apple Silicon 或 Intel）。</li>
               <li>打开 .dmg，将 DropVid 拖入「应用程序」文件夹。</li>
@@ -34,7 +41,10 @@ export function InstallGuide(): React.JSX.Element {
           </div>
 
           <div className={styles.warn}>
-            <p className={styles.warnTitle}>首次启动可能看到的安全提示</p>
+            <p className={styles.warnTitle}>
+              <Icon name="warning" size={15} />
+              <span>首次启动可能看到的安全提示</span>
+            </p>
             <p>
               系统可能弹出类似「无法打开 DropVid，因为无法验证开发者」或「Apple
               无法检查此 App 是否包含恶意软件」。内测版未签名时都会出现，不代表软件有毒。
@@ -64,12 +74,18 @@ export function InstallGuide(): React.JSX.Element {
           transition={{ duration: 0.45, delay: 0.06 }}
         >
           <div className={styles.cardHead}>
-            <span className={styles.badge}>Windows</span>
+            <span className={styles.badge}>
+              <Icon name="windows" size={14} />
+              <span>Windows</span>
+            </span>
             <h3>Windows 安装</h3>
           </div>
 
           <div className={styles.block}>
-            <p className={styles.blockTitle}>安装步骤</p>
+            <p className={styles.blockTitle}>
+              <Icon name="download" size={13} />
+              <span>安装步骤</span>
+            </p>
             <ol className={styles.list}>
               <li>下载 .exe 安装程序（Windows 10 / 11，64 位）。</li>
               <li>双击运行，按向导选择安装目录并完成安装。</li>
@@ -78,7 +94,10 @@ export function InstallGuide(): React.JSX.Element {
           </div>
 
           <div className={styles.warn}>
-            <p className={styles.warnTitle}>首次启动可能看到的安全提示</p>
+            <p className={styles.warnTitle}>
+              <Icon name="warning" size={15} />
+              <span>首次启动可能看到的安全提示</span>
+            </p>
             <p>
               SmartScreen 可能显示「Windows 已保护你的电脑」或发布者为「未知」。未签名的内测安装包常见此提示。
             </p>
@@ -101,6 +120,7 @@ export function InstallGuide(): React.JSX.Element {
       <p className={styles.footnote}>
         正式版计划接入代码签名，届时上述提示会明显减少。若你仍不放心，可在虚拟机或备用账号中先试跑；下载引擎已内置在安装包内，首次启动无需再联网安装。
       </p>
+      </div>
     </section>
   )
 }

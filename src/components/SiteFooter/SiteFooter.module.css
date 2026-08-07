@@ -1,7 +1,8 @@
 .footer {
   padding: 48px 0 32px;
   border-top: 1px solid var(--line);
-  background: rgba(18, 20, 26, 0.03);
+  background: #0f1115;
+  color: #fff;
 }
 
 .inner {
@@ -20,7 +21,7 @@
 
 .inner p {
   margin: 8px 0 0;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.55);
   font-size: 14px;
   line-height: 1.6;
 }
@@ -31,7 +32,7 @@
 
 .copy {
   margin-top: 28px;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.4);
   font-size: 12px;
 }
 

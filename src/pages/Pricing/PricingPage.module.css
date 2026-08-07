@@ -1,0 +1,65 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f4f4f5;
+}
+
+.banner {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: #fff;
+  background: #111214;
+}
+
+.atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 80% at 80% -10%, rgba(255, 255, 255, 0.08), transparent 55%),
+    radial-gradient(ellipse 50% 60% at 10% 110%, rgba(255, 255, 255, 0.04), transparent 50%),
+    linear-gradient(165deg, #1a1b1f 0%, #111214 48%, #0c0d10 100%);
+}
+
+.bannerInner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--layout-max);
+  margin: 0 auto;
+  padding: 12px var(--layout-pad) clamp(36px, 6vh, 56px);
+  box-sizing: border-box;
+}
+
+.kicker {
+  margin: 18px 0 0;
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 10px 0 0;
+  max-width: 14em;
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.12;
+}
+
+.lead {
+  margin: 12px 0 0;
+  max-width: 32em;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.main {
+  flex: 1;
+}

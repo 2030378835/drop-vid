@@ -1,0 +1,261 @@
+.wrap {
+  position: relative;
+  background: #0d111c;
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 55% 50% at 70% 40%, rgba(99, 122, 255, 0.12), transparent 60%),
+    #0d111c;
+}
+
+.stickyInner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding-block: clamp(20px, 3.5vh, 36px) clamp(16px, 3vh, 28px);
+}
+
+.head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: clamp(16px, 3vh, 24px);
+  flex-shrink: 0;
+}
+
+.headCopy {
+  min-width: 0;
+}
+
+.kicker,
+.sceneKicker {
+  margin: 0 0 6px;
+  color: rgba(190, 202, 230, 0.55);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3.6vw, 36px);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.15;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(210, 218, 240, 0.55);
+  font-size: 13px;
+  font-weight: 600;
+  transition:
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.tab em {
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.7;
+}
+
+.tabActive {
+  color: #fff;
+  background: rgba(123, 147, 255, 0.18);
+  border-color: rgba(123, 147, 255, 0.45);
+}
+
+.viewport {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.track {
+  display: flex;
+  height: 100%;
+  will-change: transform;
+}
+
+.panel {
+  flex: 0 0 auto;
+  height: 100%;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 2px;
+  box-sizing: border-box;
+}
+
+.frame {
+  margin: 0;
+  width: min(100%, 980px);
+  height: min(100%, 58vh);
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #12161f;
+  box-shadow:
+    0 0 0 1px rgba(99, 122, 255, 0.06),
+    0 28px 64px rgba(0, 0, 0, 0.45);
+}
+
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+.caption {
+  flex-shrink: 0;
+  display: grid;
+  gap: 16px;
+  margin-top: clamp(14px, 2.5vh, 22px);
+  min-height: 7.5em;
+}
+
+.copy {
+  max-width: 34em;
+}
+
+.copy h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.6vw, 28px);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+}
+
+.copy p:last-child {
+  margin: 8px 0 0;
+  color: rgba(190, 202, 230, 0.62);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.progress {
+  width: 100%;
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.progressFill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #7b93ff, #4f6ef7);
+  transition: width 0.25s ease;
+}
+
+/* 减弱动效回退 */
+.wrapStatic {
+  background: #0d111c;
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.staticInner {
+  padding-block: clamp(64px, 10vh, 96px);
+}
+
+.headStatic {
+  max-width: 36em;
+}
+
+.desc {
+  margin: 14px 0 0;
+  color: rgba(190, 202, 230, 0.62);
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.staticList {
+  display: grid;
+  gap: clamp(40px, 6vh, 64px);
+  margin-top: clamp(32px, 5vh, 48px);
+}
+
+.panelStatic {
+  display: grid;
+  gap: 18px;
+}
+
+.panelStatic .frame {
+  width: 100%;
+  height: auto;
+}
+
+.panelStatic .frame img {
+  height: auto;
+}
+
+.panelStatic .copy h3 {
+  color: #fff;
+}
+
+@media (max-width: 860px) {
+  .head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tabs {
+    justify-content: flex-start;
+  }
+
+  .frame {
+    height: min(100%, 46vh);
+  }
+
+  .caption {
+    min-height: 8.5em;
+  }
+}
+
+@media (max-width: 560px) {
+  .tab em {
+    display: none;
+  }
+
+  .tab {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+}

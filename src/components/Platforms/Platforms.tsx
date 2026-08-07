@@ -8,10 +8,9 @@ import {
   localPlatformIcon,
   platformNote
 } from '../../utils/platformDisplay'
-import section from '../Section/Section.module.css'
+import { Icon } from '../Icon'
 import styles from './Platforms.module.css'
 
-/** 折叠态最多展示数量（刚好两行 × 4 列） */
 const PREVIEW_COUNT = 8
 
 type DisplayPlatform = {
@@ -51,68 +50,68 @@ export function Platforms(): React.JSX.Element {
     }
   }, [])
 
-  const cookieCount = platforms.filter((p) => p.note.includes('Cookie')).length
   const hasMore = platforms.length > PREVIEW_COUNT
   const visible = expanded || !hasMore ? platforms : platforms.slice(0, PREVIEW_COUNT)
   const hiddenCount = platforms.length - PREVIEW_COUNT
 
   return (
-    <section className={`${section.section} ${styles.wrap}`} id="platforms">
-      <p className={section.kicker}>平台</p>
-      <h2 className={section.title}>覆盖日常最常用的视频来源</h2>
-      <p className={section.desc}>
-        {ready
-          ? cookieCount > 0
-            ? `列表由服务端实时同步。部分站点需导入浏览器 Cookie；不支持的平台不会出现在此。`
-            : '列表由服务端实时同步，粘贴分享链接即可解析下载。'
-          : '正在同步服务端平台配置…'}
-      </p>
+    <section className={styles.wrap} id="platforms">
+      <div className={`layout ${styles.inner}`}>
+        <div className={styles.head}>
+          <p className={styles.kicker}>平台</p>
+          <h2 className={styles.title}>覆盖日常最常用的视频来源</h2>
+          <p className={styles.desc}>
+            {ready
+              ? '列表由服务端同步。部分站点需导入浏览器 Cookie；不支持的平台不会出现在此。'
+              : '正在同步服务端平台配置…'}
+          </p>
+        </div>
 
-      <ul className={styles.list}>
-        {visible.map((item, index) => (
-          <motion.li
-            key={item.code}
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.35 }}
-            transition={{ duration: 0.4, delay: Math.min(index, 8) * 0.05 }}
-          >
-            <strong>
-              {(item.iconUrl || item.localIcon) && (
-                <img
-                  width={24}
-                  height={24}
-                  src={item.iconUrl || item.localIcon}
-                  alt=""
-                  onError={(event) => {
-                    const img = event.currentTarget
-                    if (item.localIcon && img.src !== item.localIcon) {
-                      img.src = item.localIcon
-                      return
-                    }
-                    img.style.display = 'none'
-                  }}
-                />
-              )}
-              {item.name}
-            </strong>
-            <span>{item.note}</span>
-          </motion.li>
-        ))}
+        <ul className={styles.logoStrip}>
+          {visible.map((item, index) => (
+            <motion.li
+              key={item.code}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.35, delay: Math.min(index, 8) * 0.04 }}
+            >
+              <span className={styles.logoMark}>
+                {(item.iconUrl || item.localIcon) && (
+                  <img
+                    width={28}
+                    height={28}
+                    src={item.iconUrl || item.localIcon}
+                    alt=""
+                    onError={(event) => {
+                      const img = event.currentTarget
+                      if (item.localIcon && img.src !== item.localIcon) {
+                        img.src = item.localIcon
+                        return
+                      }
+                      img.style.display = 'none'
+                    }}
+                  />
+                )}
+              </span>
+              <strong>{item.name}</strong>
+              <span>{item.note}</span>
+            </motion.li>
+          ))}
+        </ul>
 
         {hasMore ? (
-          <li className={styles.moreRow}>
-            <button
-              type="button"
-              className={styles.moreBtn}
-              aria-expanded={expanded}
-              onClick={() => setExpanded((open) => !open)}
-            >
-              {expanded ? '收起' : `展示更多（还有 ${hiddenCount} 个）`}
-            </button>
-          </li>
+          <button
+            type="button"
+            className={styles.moreBtn}
+            aria-expanded={expanded}
+            onClick={() => setExpanded((open) => !open)}
+          >
+            <Icon name={expanded ? 'chevronDown' : 'circlePlus'} size={16} />
+            <span>{expanded ? '收起' : `展示更多（还有 ${hiddenCount} 个）`}</span>
+          </button>
         ) : null}
-      </ul>
+      </div>
     </section>
   )
 }

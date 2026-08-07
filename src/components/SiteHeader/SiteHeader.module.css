@@ -40,16 +40,46 @@
   font-weight: 500;
 }
 
-.onHero .nav a:not(.cta) {
+.onHero .nav a:not(.cta):not(.pricingBtn) {
   color: rgba(255, 255, 255, 0.78);
   transition: color 0.15s ease;
 }
 
-.onHero .nav a:not(.cta):hover {
+.onHero .nav a:not(.cta):not(.pricingBtn):hover {
   color: #fff;
 }
 
+.pricingBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff !important;
+  font-weight: 650;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.pricingBtn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.7);
+  transform: translateY(-1px);
+}
+
+.pricingBtn[aria-current='page'] {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.85);
+}
+
 .cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 8px 14px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.96);
@@ -63,8 +93,19 @@
   transform: translateY(-1px);
 }
 
+/* 定价页：顶栏与黑白卡片体系统一 */
+.mono .cta {
+  color: #12141a !important;
+}
+
+.mono .pricingBtn[aria-current='page'] {
+  background: #fff;
+  border-color: #fff;
+  color: #12141a !important;
+}
+
 @media (max-width: 640px) {
-  .nav a:not(.cta) {
+  .nav a:not(.cta):not(.pricingBtn) {
     display: none;
   }
 

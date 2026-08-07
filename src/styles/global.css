@@ -1,20 +1,19 @@
 :root {
-  --ink: #12141a;
+  --ink: #0f1115;
   --ink-soft: #3a3f4b;
-  --muted: #7a8190;
-  --line: rgba(18, 20, 26, 0.08);
-  --line-strong: rgba(18, 20, 26, 0.14);
+  --muted: #6b7280;
+  --line: rgba(15, 17, 21, 0.08);
+  --line-strong: rgba(15, 17, 21, 0.14);
   --surface: #ffffff;
-  --bg: #f3f4f7;
-  --accent: #4f46e5;
-  --accent-deep: #3730a3;
-  --accent-soft: rgba(79, 70, 229, 0.12);
-  --download: #2563eb;
+  --bg: #f7f8fa;
+  --accent: #12141a;
+  --accent-deep: #0f1115;
+  --accent-soft: rgba(15, 17, 21, 0.06);
+  --download: #4f46e5;
   --font-display: 'Outfit', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
   --font-body: 'DM Sans', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-  --shadow: 0 1px 0 rgba(18, 20, 26, 0.04), 0 24px 56px rgba(18, 20, 26, 0.1);
+  --shadow: 0 1px 0 rgba(15, 17, 21, 0.04), 0 24px 56px rgba(15, 17, 21, 0.08);
   --radius: 18px;
-  /* Hero / 正文内容区；导航栏单独铺满更靠边 */
   --layout-max: 1120px;
   --layout-pad: clamp(20px, 4vw, 40px);
 }

@@ -1,123 +1,300 @@
 .wrap {
-  border-top: 1px solid var(--line);
-  background:
-    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(79, 70, 229, 0.07), transparent 70%),
-    var(--bg);
+  border-top: 1px solid rgba(18, 20, 26, 0.06);
+  background: #f4f4f5;
+}
+
+.billingTabs {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: min(400px, 100%);
+  margin: 28px auto 0;
+  padding: 4px;
+  border: 1px solid rgba(18, 20, 26, 0.08);
+  border-radius: 999px;
+  background: #fff;
+}
+
+.billingThumb {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  border-radius: 999px;
+  background: #12141a;
+  z-index: 0;
+}
+
+.billingTab {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  transition: color 0.18s ease;
+}
+
+.billingTabActive {
+  color: #fff;
+}
+
+.tabHint {
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+
+.billingTab:not(.billingTabActive) .tabHint {
+  background: rgba(18, 20, 26, 0.06);
+  color: var(--ink-soft);
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  margin-top: 40px;
+  gap: 18px;
+  margin-top: 32px;
   align-items: stretch;
+}
+
+.wrap > .billingTabs:first-child {
+  margin-top: 0;
 }
 
 .card {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  padding: 24px 22px 20px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.92);
+  gap: 0;
+  padding: 26px 24px 22px;
+  border: 1px solid rgba(18, 20, 26, 0.08);
+  border-radius: 22px;
+  background: #fff;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.card:hover {
+  border-color: rgba(18, 20, 26, 0.14);
+  box-shadow: 0 18px 40px rgba(18, 20, 26, 0.06);
+  transform: translateY(-2px);
 }
 
 .featured {
-  border-color: rgba(79, 70, 229, 0.35);
-  background: linear-gradient(
-    165deg,
-    rgba(255, 255, 255, 0.98) 0%,
-    rgba(79, 70, 229, 0.08) 55%,
-    rgba(255, 255, 255, 0.95) 100%
-  );
-  box-shadow: var(--shadow);
+  border-color: rgba(18, 20, 26, 0.88);
+  background: #12141a;
+  color: #fff;
+  box-shadow: 0 24px 52px rgba(18, 20, 26, 0.18);
 }
 
-.badge {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  padding: 3px 9px;
-  border-radius: 999px;
+.featured:hover {
+  border-color: #000;
+  box-shadow: 0 28px 60px rgba(18, 20, 26, 0.22);
+}
+
+.cardHead {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.planIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  color: var(--ink);
+  background: rgba(18, 20, 26, 0.04);
+  border: 1px solid rgba(18, 20, 26, 0.06);
+}
+
+.featured .planIcon {
   color: #fff;
-  background: var(--accent);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.cardHeadText {
+  min-width: 0;
+  flex: 1;
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .name {
   margin: 0;
-  padding-right: 56px;
   font-family: var(--font-display);
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 800;
   letter-spacing: -0.04em;
-  line-height: 1.1;
+  line-height: 1.15;
+}
+
+.badge {
+  padding: 3px 8px;
+  border-radius: 999px;
+  color: var(--ink);
+  background: rgba(18, 20, 26, 0.06);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+}
+
+.featured .badge {
+  color: #12141a;
+  background: #fff;
 }
 
 .tagline {
-  margin: 0;
+  margin: 6px 0 0;
   color: var(--muted);
-  font-size: 14px;
-  line-height: 1.5;
-  min-height: 2.8em;
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.featured .tagline {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.priceBlock {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(18, 20, 26, 0.08);
+}
+
+.featured .priceBlock {
+  border-top-color: rgba(255, 255, 255, 0.12);
 }
 
 .price {
   display: flex;
   align-items: baseline;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 6px 8px;
+  min-height: 40px;
 }
 
 .priceMain {
   font-family: var(--font-display);
-  font-size: clamp(30px, 3.4vw, 36px);
+  font-size: clamp(34px, 3.6vw, 40px);
   font-weight: 800;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.05em;
   line-height: 1;
+  color: var(--ink);
 }
 
 .featured .priceMain {
-  color: var(--accent-deep);
+  color: #fff;
 }
 
 .priceUnit {
   color: var(--muted);
   font-size: 14px;
   font-weight: 500;
+  white-space: nowrap;
+}
+
+.featured .priceUnit {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.priceMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 18px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.priceOriginal {
+  color: var(--muted);
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 18px;
+  text-decoration: line-through;
+  white-space: nowrap;
+}
+
+.featured .priceOriginal {
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.saveHint {
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.featured .saveHint {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.priceMetaGhost {
+  visibility: hidden;
+  font-size: 12.5px;
+  line-height: 18px;
+  white-space: nowrap;
 }
 
 .features {
   list-style: none;
-  margin: 0;
+  margin: 20px 0 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 11px;
   flex: 1;
 }
 
 .features li {
-  position: relative;
-  padding-left: 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
   color: var(--ink-soft);
   font-size: 13.5px;
   line-height: 1.45;
 }
 
-.features li::before {
-  content: '';
-  position: absolute;
-  top: 0.55em;
-  left: 0;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
+.featured .features li {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.featureIcon {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: rgba(18, 20, 26, 0.28);
+}
+
+.featured .featureIcon {
+  color: rgba(255, 255, 255, 0.35);
 }
 
 .emphasis {
@@ -125,15 +302,35 @@
   font-weight: 600;
 }
 
+.featured .emphasis {
+  color: #fff;
+}
+
+.emphasis .featureIcon {
+  color: var(--ink);
+}
+
+.featured .emphasis .featureIcon {
+  color: #fff;
+}
+
+.cardFoot {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 24px;
+}
+
 .cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 4px;
-  padding: 11px 16px;
-  border-radius: 999px;
-  border: 1px solid var(--line-strong);
-  background: transparent;
+  gap: 7px;
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(18, 20, 26, 0.14);
+  background: #fff;
   color: var(--ink);
   font-size: 14px;
   font-weight: 650;
@@ -141,34 +338,39 @@
   transition:
     background 0.18s ease,
     border-color 0.18s ease,
-    color 0.18s ease;
+    color 0.18s ease,
+    transform 0.18s ease;
 }
 
 .cta:hover {
-  border-color: var(--accent);
-  color: var(--accent-deep);
-  background: var(--accent-soft);
+  border-color: var(--ink);
+  background: rgba(18, 20, 26, 0.02);
+  transform: translateY(-1px);
 }
 
 .ctaPrimary {
   border-color: transparent;
-  background: var(--accent);
-  color: #fff;
+  background: #fff;
+  color: #12141a;
 }
 
 .ctaPrimary:hover {
-  background: var(--accent-deep);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.92);
+  color: #12141a;
   border-color: transparent;
 }
 
 .footnote {
   margin: 0;
-  padding-top: 12px;
-  border-top: 1px solid var(--line);
+  min-height: 3em;
   color: var(--muted);
   font-size: 12px;
   line-height: 1.5;
+  text-align: center;
+}
+
+.featured .footnote {
+  color: rgba(255, 255, 255, 0.45);
 }
 
 .trust {
@@ -182,5 +384,7 @@
 @media (max-width: 980px) {
   .grid {
     grid-template-columns: 1fr;
+    max-width: 440px;
+    margin-inline: auto;
   }
 }
