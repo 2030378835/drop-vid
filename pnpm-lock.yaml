@@ -20,9 +20,6 @@ importers:
       '@dropvid/ui':
         specifier: workspace:*
         version: link:packages/ui
-      framer-motion:
-        specifier: ^12.4.7
-        version: 12.42.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       react:
         specifier: ^19.0.0
         version: 19.2.7
@@ -138,6 +135,9 @@ importers:
       react:
         specifier: ^19.0.0
         version: 19.2.7
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.7(react@19.2.7)
 
 packages:
 
