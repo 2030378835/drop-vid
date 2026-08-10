@@ -24,18 +24,14 @@ VITE_BASE=/drop-vid/ pnpm build
 
 ## 腾讯云部署（dropvid.cn）
 
-与 API 同机 **Nginx 托管 + 反代 `/api`**：
+**推荐：服务器 git pull 后构建**（与 `/opt/dropvid/server` 同样思路）：
 
 ```bash
-export DROPVID_API_BASE=http://192.144.171.10:3000
-export VITE_API_BASE_URL=https://dropvid.cn
-chmod +x scripts/*.sh
-./scripts/build-production.sh
-rsync -avz --delete dist/ root@192.144.171.10:/var/www/drop-vid/dist/
+# 首次 clone 到 /opt/dropvid/site，见 deploy/DEPLOY-TENCENT.md
+cd /opt/dropvid/site && bash deploy/server-deploy.sh
 ```
 
-DNS：`dropvid.cn`、`www.dropvid.cn` → A → `192.144.171.10`。  
-完整步骤：[`deploy/DEPLOY-TENCENT.md`](deploy/DEPLOY-TENCENT.md)
+备选本机构建 + rsync：[`deploy/DEPLOY-TENCENT.md`](deploy/DEPLOY-TENCENT.md)
 
 ## GitHub Pages 部署
 

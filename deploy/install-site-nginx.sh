@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-SITE_ROOT="${SITE_ROOT:-/var/www/drop-vid}"
+SITE_ROOT="${SITE_ROOT:-/opt/dropvid/site}"
 CONF_NAME="dropvid.cn.conf"
 SRC="${SITE_ROOT}/deploy/nginx.conf.example"
 DEST="/etc/nginx/sites-available/${CONF_NAME}"
@@ -19,7 +19,7 @@ if ! command -v nginx >/dev/null 2>&1; then
   apt-get update && apt-get install -y nginx
 fi
 
-mkdir -p /var/www/drop-vid/dist /etc/nginx/sites-available /etc/nginx/sites-enabled
+mkdir -p /opt/dropvid/site/dist /etc/nginx/sites-available /etc/nginx/sites-enabled
 cp "$SRC" "$DEST"
 ln -sf "$DEST" "/etc/nginx/sites-enabled/${CONF_NAME}"
 
@@ -28,5 +28,5 @@ systemctl reload nginx
 
 echo ""
 echo "官网 Nginx 已加载 ${CONF_NAME}"
-echo "站点目录: /var/www/drop-vid/dist"
+echo "站点目录: /opt/dropvid/site/dist"
 echo "验证: curl -s -H 'Host: dropvid.cn' http://127.0.0.1/ | head"

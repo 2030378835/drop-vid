@@ -10,7 +10,7 @@ server {
     listen 80;
     server_name dropvid.cn www.dropvid.cn;
 
-    root /var/www/drop-vid/dist;
+    root /opt/dropvid/site/dist;
     index index.html;
 
     gzip on;
@@ -45,7 +45,7 @@ server {
 #     server_name dropvid.cn;
 #     ssl_certificate     /etc/nginx/ssl/dropvid.cn/fullchain.pem;
 #     ssl_certificate_key /etc/nginx/ssl/dropvid.cn/privkey.pem;
-#     root /var/www/drop-vid/dist;
+#     root /opt/dropvid/site/dist;
 #     index index.html;
 #     gzip on;
 #     gzip_types text/plain text/css application/javascript application/json image/svg+xml;
