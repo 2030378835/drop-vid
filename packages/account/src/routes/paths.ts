@@ -49,12 +49,12 @@ export type AccountNavGroup = {
 
 export const ACCOUNT_NAV_GROUPS: AccountNavGroup[] = [
   {
-    items: [{ id: 'overview', label: '概览', icon: 'chart-pie' }]
+    items: [{ id: 'overview', label: '数据概览', icon: 'chart-pie' }]
   },
   {
     title: '账户',
     items: [
-      { id: 'usage', label: '用量', icon: 'trending-up' },
+      { id: 'usage', label: '下载用量', icon: 'trending-up' },
       { id: 'history', label: '云端历史', icon: 'history' }
     ]
   },

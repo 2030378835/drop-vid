@@ -6,6 +6,7 @@
 
 import type { JSX } from 'react'
 import { useAuth } from '../../auth/AuthProvider'
+import { DeviceListSkeleton } from '../../components/Skeleton'
 import { formatDateTime } from '../../utils/format'
 import styles from '../../layout/AccountLayout.module.css'
 
@@ -26,7 +27,7 @@ export function DevicesPage(): JSX.Element {
       </header>
 
       {loading && sessions.length === 0 ? (
-        <p className={styles.emptyHint}>加载中…</p>
+        <DeviceListSkeleton rows={3} />
       ) : sessions.length === 0 ? (
         <p className={styles.emptyHint}>暂无设备记录</p>
       ) : (

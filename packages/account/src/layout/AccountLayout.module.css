@@ -49,6 +49,9 @@
   font-size: 15px;
   font-weight: 650;
   letter-spacing: -0.02em;
+  > img {
+    border-radius: 4px;
+  }
 }
 
 .sidebarNav {

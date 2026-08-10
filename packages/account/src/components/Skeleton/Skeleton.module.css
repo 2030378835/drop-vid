@@ -1,0 +1,130 @@
+/**
+ * 骨架屏基础样式
+ * @author qiangcan
+ * @date 2026-08-08
+ */
+
+.bone {
+  display: block;
+  max-width: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(15, 17, 21, 0.06) 25%,
+    rgba(15, 17, 21, 0.04) 37%,
+    rgba(15, 17, 21, 0.06) 63%
+  );
+  background-size: 400% 100%;
+  animation: skeletonShimmer 1.35s ease-in-out infinite;
+  border-radius: 6px;
+}
+
+.circle {
+  border-radius: 50%;
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.table {
+  display: grid;
+  gap: 0;
+}
+
+.tableHead,
+.tableRow {
+  display: grid;
+  grid-template-columns: repeat(var(--sk-cols, 4), minmax(0, 1fr));
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(15, 17, 21, 0.04);
+}
+
+.tableHead {
+  padding-top: 0;
+  border-bottom-color: rgba(15, 17, 21, 0.06);
+}
+
+.tableRow:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.barChart {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(4px, 0.6vw, 10px);
+  height: clamp(160px, 22vh, 220px);
+  padding-bottom: 22px;
+}
+
+.barCol {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  gap: 8px;
+}
+
+.barFill {
+  width: min(100%, 28px);
+  border-radius: 4px 4px 2px 2px;
+}
+
+.heatmapGrid {
+  display: grid;
+  grid-template-columns: repeat(26, minmax(8px, 1fr));
+  gap: 3px;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.heatmapCell {
+  aspect-ratio: 1;
+  border-radius: 2px;
+}
+
+.deviceRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(15, 17, 21, 0.05);
+}
+
+.deviceRow:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.deviceMain {
+  flex: 1;
+  display: grid;
+  gap: 8px;
+}
+
+.usageBlock + .usageBlock {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(15, 17, 21, 0.05);
+}
+
+.usageHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}

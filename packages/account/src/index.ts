@@ -6,7 +6,9 @@ export {
   useAuth,
   AccountLayout,
   LoginPage,
-  OAuthCallbackPage,
+  RegisterPage,
+  VerifyEmailPage,
+  VerifyLoginPage,
   OverviewPage,
   UsagePage,
   CloudHistoryPage,
@@ -16,3 +18,9 @@ export {
   accountPagePath
 } from './app/AccountApp'
 export type { AuthTokens, AuthUser, MeResponse, CloudUserStats } from './app/AccountApp'
+export {
+  fetchLegalDocuments,
+  LEGAL_DOCUMENT_CODES,
+  type RemoteLegalDocument,
+  type LegalDocumentCode
+} from './api/legalDocuments'

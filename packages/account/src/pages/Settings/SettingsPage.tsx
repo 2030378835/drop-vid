@@ -8,6 +8,7 @@ import { useState, type JSX } from 'react'
 import { Link } from 'react-router-dom'
 import { Modal } from '@dropvid/ui'
 import { useAuth } from '../../auth/AuthProvider'
+import { FieldRowsSkeleton } from '../../components/Skeleton'
 import { formatDateTime } from '../../utils/format'
 import styles from '../../layout/AccountLayout.module.css'
 
@@ -36,28 +37,34 @@ export function SettingsPage(): JSX.Element {
           <h2>账户信息</h2>
         </header>
 
-        <div className={styles.fieldRow}>
-          <span className={styles.fieldLabel}>邮箱</span>
-          <span className={styles.fieldValue}>{email}</span>
-        </div>
-        <div className={styles.fieldRow}>
-          <span className={styles.fieldLabel}>注册时间</span>
-          <span className={styles.fieldValue}>{loading && !me ? '…' : joined}</span>
-        </div>
-        <div className={styles.fieldRow}>
-          <span className={styles.fieldLabel}>套餐</span>
-          <span className={styles.fieldValue}>
-            {loading && !me ? '…' : plan}
-            {me?.plan !== 'pro' ? (
-              <>
-                {' · '}
-                <Link className={styles.inlineLink} to="/pricing">
-                  查看 Pro
-                </Link>
-              </>
-            ) : null}
-          </span>
-        </div>
+        {loading && !me ? (
+          <FieldRowsSkeleton rows={3} />
+        ) : (
+          <>
+            <div className={styles.fieldRow}>
+              <span className={styles.fieldLabel}>邮箱</span>
+              <span className={styles.fieldValue}>{email}</span>
+            </div>
+            <div className={styles.fieldRow}>
+              <span className={styles.fieldLabel}>注册时间</span>
+              <span className={styles.fieldValue}>{joined}</span>
+            </div>
+            <div className={styles.fieldRow}>
+              <span className={styles.fieldLabel}>套餐</span>
+              <span className={styles.fieldValue}>
+                {plan}
+                {me?.plan !== 'pro' ? (
+                  <>
+                    {' · '}
+                    <Link className={styles.inlineLink} to="/pricing">
+                      查看 Pro
+                    </Link>
+                  </>
+                ) : null}
+              </span>
+            </div>
+          </>
+        )}
       </section>
 
       <section className={styles.panel}>

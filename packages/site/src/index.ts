@@ -7,4 +7,5 @@
 
 export { Home } from './pages/Home/Home'
 export { PricingPage } from './pages/Pricing/PricingPage'
+export { LegalPage } from './pages/Legal/LegalPage'
 export { ScrollToHash } from './components/ScrollToHash'

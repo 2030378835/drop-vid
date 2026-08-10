@@ -11,10 +11,12 @@ import {
   CloudHistoryPage,
   DevicesPage,
   LoginPage,
-  OAuthCallbackPage,
   OverviewPage,
+  RegisterPage,
   SettingsPage,
-  UsagePage
+  UsagePage,
+  VerifyEmailPage,
+  VerifyLoginPage
 } from '../pages'
 import { ACCOUNT_HOME_PATH } from '../routes/paths'
 
@@ -24,7 +26,9 @@ export function AccountRoutes(): JSX.Element {
     <Routes>
       <Route path="/" element={<Navigate to={ACCOUNT_HOME_PATH} replace />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/login/oauth/callback" element={<OAuthCallbackPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/verify-email" element={<VerifyEmailPage />} />
+      <Route path="/verify-login" element={<VerifyLoginPage />} />
       <Route path="/account" element={<AccountLayout />}>
         <Route index element={<Navigate to="overview" replace />} />
         <Route path="overview" element={<OverviewPage />} />
@@ -44,7 +48,9 @@ export function AccountRouteTree(): JSX.Element {
   return (
     <>
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/login/oauth/callback" element={<OAuthCallbackPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/verify-email" element={<VerifyEmailPage />} />
+      <Route path="/verify-login" element={<VerifyLoginPage />} />
       <Route path="/account" element={<AccountLayout />}>
         <Route index element={<Navigate to="overview" replace />} />
         <Route path="overview" element={<OverviewPage />} />

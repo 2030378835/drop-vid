@@ -13,13 +13,10 @@ import styles from './AuthShell.module.css'
 
 type Props = {
   children: ReactNode
-  /** 页脚法律链接点击 */
-  onOpenTerms?: () => void
-  onOpenPrivacy?: () => void
 }
 
 /** 登录页独立外壳 */
-export function AuthShell({ children, onOpenTerms, onOpenPrivacy }: Props): JSX.Element {
+export function AuthShell({ children }: Props): JSX.Element {
   return (
     <div className={styles.shell}>
       <header className={styles.header}>
@@ -33,13 +30,13 @@ export function AuthShell({ children, onOpenTerms, onOpenPrivacy }: Props): JSX.
       </header>
       <main className={styles.main}>{children}</main>
       <footer className={styles.footer}>
-        <button type="button" className={styles.footerLink} onClick={onOpenTerms}>
+        <Link to="/legal#terms" className={styles.footerLink}>
           服务条款
-        </button>
+        </Link>
         <span className={styles.footerSep}>·</span>
-        <button type="button" className={styles.footerLink} onClick={onOpenPrivacy}>
+        <Link to="/legal#privacy" className={styles.footerLink}>
           隐私政策
-        </button>
+        </Link>
       </footer>
     </div>
   )

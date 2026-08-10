@@ -7,6 +7,7 @@
 import type { JSX } from 'react'
 import { Link } from 'react-router-dom'
 import { DownloadHeatmap } from '../../components/DownloadHeatmap'
+import { StatRowSkeleton, FieldRowsSkeleton, HeatmapSkeleton, Skeleton } from '../../components/Skeleton'
 import { useAuth } from '../../auth/AuthProvider'
 import { useHistoryStats } from '../../hooks/useHistoryStats'
 import { formatQuotaLimit } from '../../utils/format'
@@ -22,7 +23,6 @@ export function OverviewPage(): JSX.Element {
   const quotaLimit = me?.quota.limit ?? 0
   const quotaPct =
     quotaLimit > 0 ? Math.min(100, Math.round((quotaUsed / quotaLimit) * 100)) : 0
-  const pageLoading = loading || statsLoading
   const periodTotal = stats?.dailyTrend.reduce((sum, day) => sum + day.count, 0) ?? 0
   const hasHeatmapData = stats?.dailyTrend.some((day) => day.count > 0) ?? false
 
@@ -45,34 +45,32 @@ export function OverviewPage(): JSX.Element {
           </div>
         </header>
 
-        <div className={styles.statRow}>
-          <div className={styles.statBox}>
-            <span className={styles.statLabel}>当前套餐</span>
-            <strong className={styles.statValue}>{pageLoading && !me ? '…' : plan}</strong>
-          </div>
-          <div className={styles.statBox}>
-            <span className={styles.statLabel}>今日下载</span>
-            <strong className={styles.statValue}>
-              {pageLoading && !me
-                ? '…'
-                : quotaLimit < 0
+        {(loading && !me) || (statsLoading && !stats) ? (
+          <StatRowSkeleton />
+        ) : (
+          <div className={styles.statRow}>
+            <div className={styles.statBox}>
+              <span className={styles.statLabel}>当前套餐</span>
+              <strong className={styles.statValue}>{plan}</strong>
+            </div>
+            <div className={styles.statBox}>
+              <span className={styles.statLabel}>今日下载</span>
+              <strong className={styles.statValue}>
+                {quotaLimit < 0
                   ? `${quotaUsed} 次`
                   : `${quotaUsed} / ${formatQuotaLimit(quotaLimit)}`}
-            </strong>
+              </strong>
+            </div>
+            <div className={styles.statBox}>
+              <span className={styles.statLabel}>累计完成</span>
+              <strong className={styles.statValue}>{stats?.totalCompleted ?? 0}</strong>
+            </div>
+            <div className={styles.statBox}>
+              <span className={styles.statLabel}>本周下载</span>
+              <strong className={styles.statValue}>{stats?.thisWeekCount ?? 0}</strong>
+            </div>
           </div>
-          <div className={styles.statBox}>
-            <span className={styles.statLabel}>累计完成</span>
-            <strong className={styles.statValue}>
-              {pageLoading && !stats ? '…' : (stats?.totalCompleted ?? 0)}
-            </strong>
-          </div>
-          <div className={styles.statBox}>
-            <span className={styles.statLabel}>本周下载</span>
-            <strong className={styles.statValue}>
-              {pageLoading && !stats ? '…' : (stats?.thisWeekCount ?? 0)}
-            </strong>
-          </div>
-        </div>
+        )}
       </section>
 
       <section className={styles.panel}>
@@ -82,10 +80,10 @@ export function OverviewPage(): JSX.Element {
               <h2>下载活动</h2>
               <p>近一年每日下载记录，颜色越深表示下载越多。</p>
             </div>
-            {pageLoading && !stats ? (
+            {statsLoading && !stats ? (
               <div className={styles.heatmapMetric}>
                 <span className={styles.heatmapMetricLabel}>近一年累计</span>
-                <strong className={styles.heatmapMetricValue}>…</strong>
+                <Skeleton width={72} height={28} style={{ marginTop: 4, marginLeft: 'auto' }} />
               </div>
             ) : hasHeatmapData ? (
               <div className={styles.heatmapMetric}>
@@ -98,10 +96,11 @@ export function OverviewPage(): JSX.Element {
             ) : null}
           </div>
         </header>
-        <DownloadHeatmap
-          dailyTrend={stats?.dailyTrend ?? []}
-          loading={statsLoading && !stats}
-        />
+        {statsLoading && !stats ? (
+          <HeatmapSkeleton />
+        ) : (
+          <DownloadHeatmap dailyTrend={stats?.dailyTrend ?? []} loading={false} />
+        )}
       </section>
 
       <OverviewAnalyticsSection />
@@ -111,33 +110,39 @@ export function OverviewPage(): JSX.Element {
           <h2>额度概况</h2>
           <p>下载次数每日 0 点重置；云历史为账户累计同步上限。</p>
         </header>
-        <div className={styles.fieldRow}>
-          <span className={styles.fieldLabel}>今日下载</span>
-          <div className={styles.fieldValue}>
-            {me && quotaLimit >= 0 ? (
-              <div className={styles.progressWrap}>
-                <div className={styles.progressTrack}>
-                  <div className={styles.progressFill} style={{ width: `${quotaPct}%` }} />
-                </div>
-                <span className={styles.progressText}>
-                  剩余 {Math.max(0, me.quota.remaining)} 次
-                </span>
+        {loading && !me ? (
+          <FieldRowsSkeleton rows={2} />
+        ) : (
+          <>
+            <div className={styles.fieldRow}>
+              <span className={styles.fieldLabel}>今日下载</span>
+              <div className={styles.fieldValue}>
+                {me && quotaLimit >= 0 ? (
+                  <div className={styles.progressWrap}>
+                    <div className={styles.progressTrack}>
+                      <div className={styles.progressFill} style={{ width: `${quotaPct}%` }} />
+                    </div>
+                    <span className={styles.progressText}>
+                      剩余 {Math.max(0, me.quota.remaining)} 次
+                    </span>
+                  </div>
+                ) : (
+                  <span>{me ? '不限次数' : '—'}</span>
+                )}
               </div>
-            ) : (
-              <span>{me ? '不限次数' : '—'}</span>
-            )}
-          </div>
-        </div>
-        <div className={styles.fieldRow}>
-          <span className={styles.fieldLabel}>云历史条目</span>
-          <span className={styles.fieldValue}>
-            {me
-              ? me.cloudHistory.limit < 0
-                ? `已同步 ${me.cloudHistory.used} 条`
-                : `${me.cloudHistory.used} / ${me.cloudHistory.limit}（累计）`
-              : '—'}
-          </span>
-        </div>
+            </div>
+            <div className={styles.fieldRow}>
+              <span className={styles.fieldLabel}>云历史条目</span>
+              <span className={styles.fieldValue}>
+                {me
+                  ? me.cloudHistory.limit < 0
+                    ? `已同步 ${me.cloudHistory.used} 条`
+                    : `${me.cloudHistory.used} / ${me.cloudHistory.limit}（累计）`
+                  : '—'}
+              </span>
+            </div>
+          </>
+        )}
         {me?.plan !== 'pro' ? (
           <div className={styles.panelFoot}>
             <Link className={styles.linkBtn} to="/pricing">

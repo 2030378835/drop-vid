@@ -6,6 +6,7 @@
  */
 
 import { useEffect, useMemo, useState, type JSX, type ReactNode } from 'react'
+import { TableSkeleton } from '../Skeleton'
 import styles from './DataTable.module.css'
 
 export type DataTableColumn<T> = {
@@ -84,7 +85,7 @@ export function DataTable<T>({
   }
 
   if (loading && data.length === 0) {
-    return <p className={styles.emptyHint}>加载中…</p>
+    return <TableSkeleton columns={columns.length || 4} rows={pageSize ?? 5} />
   }
 
   if (pageData.length === 0) {

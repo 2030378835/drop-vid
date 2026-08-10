@@ -33,7 +33,7 @@ type AuthContextValue = {
   session: StoredWebSession | null
   me: MeResponse | null
   loading: boolean
-  setSessionFromTokens: (tokens: AuthTokens) => Promise<void>
+  setSessionFromTokens: (tokens: AuthTokens, options?: { remember?: boolean }) => Promise<void>
   refreshProfile: () => Promise<void>
   logout: () => Promise<void>
 }
@@ -139,12 +139,15 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
     })()
   }, [refreshProfile])
 
-  const setSessionFromTokens = useCallback(async (tokens: AuthTokens): Promise<void> => {
-    const saved = saveWebSession(tokens)
-    setSession(saved)
-    const profile = await fetchMe(saved.accessToken, saved.sessionId)
-    setMe(profile)
-  }, [])
+  const setSessionFromTokens = useCallback(
+    async (tokens: AuthTokens, options?: { remember?: boolean }): Promise<void> => {
+      const saved = saveWebSession(tokens, options?.remember ?? true)
+      setSession(saved)
+      const profile = await fetchMe(saved.accessToken, saved.sessionId)
+      setMe(profile)
+    },
+    []
+  )
 
   const logout = useCallback(async (): Promise<void> => {
     const current = loadWebSession()

@@ -8,6 +8,7 @@
 import { useMemo, useState, type JSX } from 'react'
 import { Icon } from '@dropvid/ui'
 import { DataTable, type DataTableColumn } from '../../components/DataTable'
+import { BarChartSkeleton, TableSkeleton } from '../../components/Skeleton'
 import { PlatformWithLabel } from '../../components/PlatformWithLabel'
 import { useAuth } from '../../auth/AuthProvider'
 import { useHistoryStats } from '../../hooks/useHistoryStats'
@@ -135,7 +136,7 @@ export function OverviewAnalyticsSection(): JSX.Element {
         {exportMsg ? <p className={styles.exportMsg}>{exportMsg}</p> : null}
 
         {loading && !stats ? (
-          <p className={styles.emptyHint}>加载中…</p>
+          <BarChartSkeleton bars={rangeDays} />
         ) : stats && stats.dailyTrend.length > 0 ? (
           <div className={styles.chartWrap}>
             <div className={styles.barChart} aria-label="每日下载趋势">
@@ -190,7 +191,9 @@ export function OverviewAnalyticsSection(): JSX.Element {
           </div>
         </header>
 
-        {stats && stats.platformStats.length > 0 ? (
+        {loading && !stats ? (
+          <TableSkeleton columns={3} rows={4} />
+        ) : stats && stats.platformStats.length > 0 ? (
           <DataTable
             columns={platformColumns}
             data={stats.platformStats}
@@ -207,7 +210,7 @@ export function OverviewAnalyticsSection(): JSX.Element {
             }
           />
         ) : (
-          <p className={styles.emptyHint}>{loading ? '加载中…' : '暂无平台数据'}</p>
+          <p className={styles.emptyHint}>暂无平台数据</p>
         )}
       </section>
     </>

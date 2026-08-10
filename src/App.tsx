@@ -13,12 +13,14 @@ import {
   CloudHistoryPage,
   DevicesPage,
   LoginPage,
-  OAuthCallbackPage,
+  RegisterPage,
+  VerifyEmailPage,
+  VerifyLoginPage,
   OverviewPage,
   SettingsPage,
   UsagePage
 } from '@dropvid/account'
-import { Home, PricingPage, ScrollToHash } from '@dropvid/site'
+import { Home, LegalPage, PricingPage, ScrollToHash } from '@dropvid/site'
 import { routerBasename } from './config/router'
 
 export default function App(): JSX.Element {
@@ -29,8 +31,11 @@ export default function App(): JSX.Element {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/pricing" element={<PricingPage />} />
+          <Route path="/legal" element={<LegalPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/login/oauth/callback" element={<OAuthCallbackPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/verify-email" element={<VerifyEmailPage />} />
+          <Route path="/verify-login" element={<VerifyLoginPage />} />
           <Route path="/account" element={<AccountLayout />}>
             <Route index element={<Navigate to="overview" replace />} />
             <Route path="overview" element={<OverviewPage />} />

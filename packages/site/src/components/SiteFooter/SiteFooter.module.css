@@ -30,6 +30,29 @@
   max-width: 42em;
 }
 
+.legalLinks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 0;
+  font-size: 13px;
+}
+
+.legalLinks a {
+  color: rgba(255, 255, 255, 0.72);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.legalLinks a:hover {
+  color: #fff;
+}
+
+.legalLinks span {
+  color: rgba(255, 255, 255, 0.28);
+}
+
 .copy {
   margin-top: 28px;
   color: rgba(255, 255, 255, 0.4);

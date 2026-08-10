@@ -7,6 +7,7 @@
 import type { JSX } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthProvider'
+import { FieldRowsSkeleton, UsageBlocksSkeleton } from '../../components/Skeleton'
 import { formatQuotaLimit } from '../../utils/format'
 import styles from '../../layout/AccountLayout.module.css'
 
@@ -72,20 +73,24 @@ export function UsagePage(): JSX.Element {
           <p>下载次数按自然日计算，每日 0 点重置；云历史为账户内累计同步上限。</p>
         </header>
 
-        <div className={styles.fieldRow}>
-          <span className={styles.fieldLabel}>当前套餐</span>
-          <span className={styles.fieldValue}>
-            {loading && !me ? '…' : plan}
-            {me?.plan !== 'pro' ? (
-              <>
-                {' '}
-                <Link className={styles.inlineLink} to="/pricing">
-                  升级
-                </Link>
-              </>
-            ) : null}
-          </span>
-        </div>
+        {loading && !me ? (
+          <FieldRowsSkeleton rows={1} />
+        ) : (
+          <div className={styles.fieldRow}>
+            <span className={styles.fieldLabel}>当前套餐</span>
+            <span className={styles.fieldValue}>
+              {plan}
+              {me?.plan !== 'pro' ? (
+                <>
+                  {' '}
+                  <Link className={styles.inlineLink} to="/pricing">
+                    升级
+                  </Link>
+                </>
+              ) : null}
+            </span>
+          </div>
+        )}
       </section>
 
       <section className={styles.panel}>
@@ -93,7 +98,9 @@ export function UsagePage(): JSX.Element {
           <h2>使用情况</h2>
         </header>
 
-        {me ? (
+        {loading && !me ? (
+          <UsageBlocksSkeleton blocks={2} />
+        ) : me ? (
           <>
             <UsageMeter
               label="今日下载"
@@ -110,7 +117,7 @@ export function UsagePage(): JSX.Element {
             />
           </>
         ) : (
-          <p className={styles.emptyHint}>{loading ? '加载中…' : '暂无数据'}</p>
+          <p className={styles.emptyHint}>暂无数据</p>
         )}
       </section>
     </>

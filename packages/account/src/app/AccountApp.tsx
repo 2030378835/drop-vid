@@ -21,7 +21,9 @@ export { AuthProvider, useAuth } from '../auth/AuthProvider'
 export { AccountLayout } from '../layout/AccountLayout'
 export {
   LoginPage,
-  OAuthCallbackPage,
+  RegisterPage,
+  VerifyEmailPage,
+  VerifyLoginPage,
   OverviewPage,
   UsagePage,
   CloudHistoryPage,
