@@ -1,137 +1,138 @@
-# 腾讯云部署 DropVid 官网（dropvid.cn）
+# 服务器部署 DropVid 官网（dropvid.cn）
 
-官网是 **Vite 静态 SPA**（`drop-vid`），后端 API 在 `192.144.171.10:3000`（`crazy-dropVid-server`）。  
-**推荐**：同一台机器 Nginx 托管 `dropvid.cn`，并反代 `/api` → `127.0.0.1:3000`。
-
-## 架构
-
-```
-https://dropvid.cn
-    │
-    ▼
-Nginx :443 / :80  ──► /           → /var/www/drop-vid/dist
-                 ──► /api/*      → 127.0.0.1:3000
-                 ──► /config/*   → dist/config/*.json
-                 ──► /update/*   → dist/update/latest.json
-```
+整体：**官网** `dropvid.cn` 只托管静态文件；**API** `api.dropvid.cn` 反代到本机 `:3000`（见 `crazy-dropVid-server/deploy/`）。
 
 ---
 
-## 一、域名解析（腾讯云 DNS）
-
-在 [DNS 解析](https://console.cloud.tencent.com/cns) 为 `dropvid.cn` 添加：
+## 第 0 步：DNS（腾讯云）
 
 | 主机记录 | 类型 | 记录值 |
 |----------|------|--------|
 | `@` | A | `192.144.171.10` |
 | `www` | A | `192.144.171.10` |
-
-备案未完成前，部分运营商可能对 `.cn` 域名有访问限制，可先通过 IP 验证 Nginx 与 API。
-
----
-
-## 二、安全组
-
-| 端口 | 用途 |
-|------|------|
-| 22 | SSH |
-| 80 | HTTP（证书签发 / 跳转 HTTPS） |
-| 443 | HTTPS 官网 |
-| 3000 | **勿对公网开放**，仅本机反代 |
+| `api` | A | `192.144.171.10` |
 
 ---
 
-## 三、构建官网
+## 第 1 步：SSH 登录服务器
+
+```bash
+ssh root@192.144.171.10
+```
+
+---
+
+## 第 2 步：确认 API 已在跑
+
+```bash
+curl -s http://127.0.0.1:3000/health
+pm2 list    # 应有 dropvid-api
+```
+
+若没有，在 `/opt/dropvid/server` 按 `crazy-dropVid-server` README 启动。
+
+配置 API 域名 Nginx（只需做一次）：
+
+```bash
+bash /opt/dropvid/server/deploy/install-api-nginx.sh
+curl -s http://api.dropvid.cn/health
+```
+
+---
+
+## 第 3 步：本机构建官网（在你 Mac 上）
 
 ```bash
 cd drop-vid
 pnpm install
 
-# 在服务器上构建时可写 127.0.0.1；本机构建写公网 IP
 export DROPVID_API_BASE=http://192.144.171.10:3000
-
-# 与页面同域（上 SSL 后用 https）
-export VITE_API_BASE_URL=https://dropvid.cn
-# 证书未就绪前临时：export VITE_API_BASE_URL=http://dropvid.cn
+export VITE_API_BASE_URL=http://api.dropvid.cn   # 上 HTTPS 后改 https://api.dropvid.cn
 
 chmod +x scripts/*.sh
 ./scripts/build-production.sh
 ```
 
+得到 `dist/` 目录。
+
 ---
 
-## 四、上传到服务器
+## 第 4 步：上传 dist 到服务器
 
 ```bash
+ssh root@192.144.171.10 "mkdir -p /var/www/drop-vid/dist"
+
 rsync -avz --delete dist/ root@192.144.171.10:/var/www/drop-vid/dist/
+
+# 同时上传 deploy 脚本（首次）
+rsync -avz deploy/ root@192.144.171.10:/var/www/drop-vid/deploy/
 ```
 
 ---
 
-## 五、Nginx
+## 第 5 步：服务器安装官网 Nginx
 
 ```bash
-sudo mkdir -p /var/www/drop-vid /etc/nginx/ssl/dropvid.cn
-sudo cp deploy/nginx.conf.example /etc/nginx/conf.d/dropvid.conf
-sudo nginx -t && sudo systemctl reload nginx
+ssh root@192.144.171.10
+
+bash /var/www/drop-vid/deploy/install-site-nginx.sh
 ```
 
-- **未上 SSL**：使用配置里已启用的 `listen 80` 块，访问 `http://dropvid.cn`
-- **已上 SSL**：按 `nginx.conf.example` 注释说明启用 443 块，HTTP 301 到 `https://dropvid.cn`
-
-### SSL 证书（腾讯云免费）
-
-1. [SSL 证书控制台](https://console.cloud.tencent.com/ssl) → 申请免费证书（域名填 `dropvid.cn`，可含 `www.dropvid.cn`）
-2. 下载 **Nginx** 格式，上传到 `/etc/nginx/ssl/dropvid.cn/`
-3. 启用 443 配置并 reload
+浏览器访问 `http://dropvid.cn`（DNS 生效后）。
 
 ---
 
-## 六、后端必改项
+## 第 6 步：改后端配置
 
-**API `.env`：**
+**`/opt/dropvid/server/.env`：**
 
 ```env
-CORS_ORIGIN=https://dropvid.cn,https://www.dropvid.cn,http://dropvid.cn
-NODE_ENV=production
+CORS_ORIGIN=http://dropvid.cn,https://dropvid.cn,http://www.dropvid.cn,https://www.dropvid.cn
+```
+
+改完后：
+
+```bash
+pm2 restart dropvid-api
 ```
 
 **管理后台 → 跳转配置：**
 
 | code | URL |
 |------|-----|
-| `dropvid_home` | `https://dropvid.cn` |
+| `dropvid_home` | `https://dropvid.cn`（暂 HTTP 则 `http://dropvid.cn`） |
 | `pricing` | `https://dropvid.cn/pricing` |
 
-邮件登录/注册链接会拼在 `dropvid_home` 上，务必为 HTTPS 且可公网访问。
+---
+
+## 第 7 步：HTTPS（建议）
+
+1. [腾讯云 SSL](https://console.cloud.tencent.com/ssl) 申请：
+   - 证书 1：`dropvid.cn` + `www.dropvid.cn`（官网）
+   - 证书 2：`api.dropvid.cn`（API）
+2. 证书放到 `/etc/nginx/ssl/`，按 `deploy/nginx.conf.example` 与 `server/deploy/nginx/api.dropvid.cn.conf` 启用 443
+3. **重新构建**官网并 rsync（`VITE_API_BASE_URL=https://api.dropvid.cn`）
 
 ---
 
-## 七、验收清单
-
-- [ ] `https://dropvid.cn` 首页正常
-- [ ] `https://dropvid.cn/login` 刷新不 404
-- [ ] `https://dropvid.cn/legal` Tab 可切换
-- [ ] 登录 / 注册邮件链接域名是 `dropvid.cn`
-- [ ] `curl -s https://dropvid.cn/api/v1/config/limits` 返回 JSON
-
----
-
-## 八、发版
+## 以后每次发版
 
 ```bash
+# 本机
 ./scripts/build-production.sh
 rsync -avz --delete dist/ root@192.144.171.10:/var/www/drop-vid/dist/
 ```
 
-更新 Gitee `push-drop-vid` 的 `latest.json` 后重新构建，下载按钮才会指向新版本。
+不用重启 Nginx。
 
 ---
 
-## 常见问题
+## 验收
 
-**登录/API 失败** → 检查 `VITE_API_BASE_URL` 是否为 `https://dropvid.cn`，以及 Nginx `/api/` 反代。
+```bash
+curl -s http://dropvid.cn/ | head          # 有 HTML
+curl -s http://api.dropvid.cn/health         # ok
+curl -s http://api.dropvid.cn/api/v1/config/limits | head
+```
 
-**www 与裸域** → 建议统一跳转到 `https://dropvid.cn`（见 nginx 配置注释）。
-
-**GitHub Pages** → 可与 `dropvid.cn` 并存作备用；正式环境以 `dropvid.cn` 为准。
+浏览器：`/login`、`/legal` 刷新不 404；登录能发邮件/调 API。
