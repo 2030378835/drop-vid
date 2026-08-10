@@ -1,0 +1,105 @@
+# DropVid 官网 + API 反代（dropvid.cn）
+# 1. 腾讯云 DNS：dropvid.cn、www.dropvid.cn → A 记录 → 192.144.171.10
+# 2. SSL：腾讯云控制台申请 dropvid.cn 免费证书，下载 Nginx 版放到 /etc/nginx/ssl/
+# 3. cp deploy/nginx.conf.example /etc/nginx/conf.d/dropvid.conf && nginx -t && reload
+
+upstream dropvid_api {
+    server 127.0.0.1:3000;
+    keepalive 16;
+}
+
+# —— 未配置 SSL 前：仅启用此 80 块，并注释下方 443 块 ——
+server {
+    listen 80;
+    server_name dropvid.cn www.dropvid.cn;
+
+    root /var/www/drop-vid/dist;
+    index index.html;
+
+    gzip on;
+    gzip_types text/plain text/css application/javascript application/json image/svg+xml;
+    gzip_min_length 256;
+
+    location /api/ {
+        proxy_pass http://dropvid_api;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Connection "";
+    }
+
+    location /config/ {
+        try_files $uri =404;
+        add_header Cache-Control "public, max-age=300";
+    }
+
+    location /update/ {
+        try_files $uri =404;
+        add_header Cache-Control "public, max-age=120";
+    }
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+
+# —— 配置 SSL 后：启用以下块，并给上方 80 块改为 return 301 https://dropvid.cn$request_uri; ——
+
+# server {
+#     listen 80;
+#     server_name dropvid.cn www.dropvid.cn;
+#     return 301 https://dropvid.cn$request_uri;
+# }
+#
+# server {
+#     listen 443 ssl http2;
+#     server_name dropvid.cn;
+#
+#     ssl_certificate     /etc/nginx/ssl/dropvid.cn/fullchain.pem;
+#     ssl_certificate_key /etc/nginx/ssl/dropvid.cn/privkey.pem;
+#     ssl_session_timeout 1d;
+#     ssl_protocols TLSv1.2 TLSv1.3;
+#
+#     root /var/www/drop-vid/dist;
+#     index index.html;
+#
+#     gzip on;
+#     gzip_types text/plain text/css application/javascript application/json image/svg+xml;
+#     gzip_min_length 256;
+#
+#     location /api/ {
+#         proxy_pass http://dropvid_api;
+#         proxy_http_version 1.1;
+#         proxy_set_header Host $host;
+#         proxy_set_header X-Real-IP $remote_addr;
+#         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+#         proxy_set_header X-Forwarded-Proto $scheme;
+#         proxy_set_header Connection "";
+#     }
+#
+#     location /config/ {
+#         try_files $uri =404;
+#         add_header Cache-Control "public, max-age=300";
+#     }
+#
+#     location /update/ {
+#         try_files $uri =404;
+#         add_header Cache-Control "public, max-age=120";
+#     }
+#
+#     location / {
+#         try_files $uri $uri/ /index.html;
+#     }
+# }
+#
+# server {
+#     listen 443 ssl http2;
+#     server_name www.dropvid.cn;
+#
+#     ssl_certificate     /etc/nginx/ssl/dropvid.cn/fullchain.pem;
+#     ssl_certificate_key /etc/nginx/ssl/dropvid.cn/privkey.pem;
+#
+#     return 301 https://dropvid.cn$request_uri;
+# }

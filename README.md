@@ -22,6 +22,21 @@ pnpm preview
 VITE_BASE=/drop-vid/ pnpm build
 ```
 
+## 腾讯云部署（dropvid.cn）
+
+与 API 同机 **Nginx 托管 + 反代 `/api`**：
+
+```bash
+export DROPVID_API_BASE=http://192.144.171.10:3000
+export VITE_API_BASE_URL=https://dropvid.cn
+chmod +x scripts/*.sh
+./scripts/build-production.sh
+rsync -avz --delete dist/ root@192.144.171.10:/var/www/drop-vid/dist/
+```
+
+DNS：`dropvid.cn`、`www.dropvid.cn` → A → `192.144.171.10`。  
+完整步骤：[`deploy/DEPLOY-TENCENT.md`](deploy/DEPLOY-TENCENT.md)
+
 ## GitHub Pages 部署
 
 推送到 `main`（或手动跑 **Deploy GitHub Pages**）后，Actions 会构建并**直接发布**到 GitHub Pages，不再依赖 `gh-pages` 分支。
