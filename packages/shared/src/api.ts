@@ -10,10 +10,12 @@ export const DEV_API_PROXY_PREFIX = '/__api__'
 /**
  * 运行时优先的 API 根地址。
  * - 开发：走 Vite 代理
- * - 生产：优先 VITE_API_BASE_URL，否则生产 IP（可能被浏览器混合内容拦截）
+ * - 生产：VITE_API_BASE_URL=same-origin 时走同域 /api（避免 QQ 内置浏览器跨域）
+ * - 否则优先 VITE_API_BASE_URL，再 fallback 生产 IP
  */
 export function resolveApiBaseUrl(): string {
   const fromEnv = import.meta.env.VITE_API_BASE_URL?.trim()
+  if (fromEnv === 'same-origin') return ''
   if (fromEnv) return fromEnv.replace(/\/$/, '')
 
   if (import.meta.env.DEV) return DEV_API_PROXY_PREFIX

@@ -74,6 +74,29 @@ export async function verifyLoginLink(
   }
 }
 
+/** 邮件 6 位登录码（链接打不开的备用方案） */
+export async function verifyLoginCode(
+  email: string,
+  code: string,
+  challengeId?: string
+): Promise<AuthTokens & { challengeCompleted?: boolean }> {
+  const data = await accountFetch<{ ok: true } & AuthTokens & { challengeCompleted?: boolean }>(
+    '/api/v1/auth/verify-login',
+    {
+      method: 'POST',
+      body: {
+        email: email.trim(),
+        code: code.trim(),
+        ...(challengeId?.trim() ? { challengeId: challengeId.trim() } : {})
+      }
+    }
+  )
+  return {
+    ...parseAuthTokens(data),
+    challengeCompleted: data.challengeCompleted
+  }
+}
+
 const verifyLoginLinkCache = new Map<
   string,
   Promise<AuthTokens & { challengeCompleted?: boolean }>

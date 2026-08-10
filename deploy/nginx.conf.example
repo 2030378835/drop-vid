@@ -6,6 +6,11 @@
 #   sudo ln -sf /etc/nginx/sites-available/dropvid.cn.conf /etc/nginx/sites-enabled/
 #   sudo nginx -t && sudo systemctl reload nginx
 
+upstream dropvid_api {
+    server 127.0.0.1:3000;
+    keepalive 16;
+}
+
 server {
     listen 80;
     server_name dropvid.cn www.dropvid.cn;
@@ -16,6 +21,17 @@ server {
     gzip on;
     gzip_types text/plain text/css application/javascript application/json image/svg+xml;
     gzip_min_length 256;
+
+    # 同域反代 API：QQ 内置浏览器跨域 fetch 更稳定；构建时 VITE_API_BASE_URL=same-origin
+    location /api/ {
+        proxy_pass http://dropvid_api;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Connection "";
+    }
 
     location /config/ {
         try_files $uri =404;
